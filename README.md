@@ -2,7 +2,7 @@
 
 
 <img src="./docs/img/logo.png" align="right"
-     alt="Size Limit logo by Anton Lovchikov" width="120" height="120">
+     alt="ALMS logo" width="150" height="150">
 
 
 > *Remember: Testing is the future, and the future starts with... communication?*
