@@ -6,6 +6,7 @@ const express = require('express');
 const package = require('../../package.json');
 const employees = require('../database/gateways/employee-gateway');
 const { checkAllFieldsAreString } = require('../helpers/check-fields-are-string');
+const passwordHasher = require('../helpers/password-hasher');
 const logger = require('../logging/logger');
 
 const router = express.Router();
@@ -55,12 +56,14 @@ router.post('/', async function (req, res) {
 		return;
 	}
 
+	const hashedPassword = passwordHasher.hashPassword(body.password);
+
 	try {
 		await employees.addNewEmployee(
 			body.username,
 			body.name,
 			body.surname,
-			body.password,
+			hashedPassword,
 			req.ip
 		);
 	} catch (e) {
