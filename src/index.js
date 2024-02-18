@@ -5,6 +5,7 @@ const loader = require('require-dir');
 const logger = require('./logging/logger');
 const bodyParser = require('body-parser');
 const { badJsonErrorHandler } = require('./error_handling/bad-json');
+const { hashPassword, isPasswordValid } = require('./helpers/password-hasher');
 
 async function main() {
 	logger.success('Startup initiated.');
