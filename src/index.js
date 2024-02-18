@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const express = require('express');
 const loader = require('require-dir');
 const logger = require('./logging/logger');
+const bodyParser = require('body-parser');
 
 async function main() {
 	logger.success('Startup initiated.');
@@ -18,18 +19,21 @@ async function main() {
 		logger.warning('No log folder specified, logs will not be stored.');
 	}
 
-	// check if database is successfully connected
+	// check if database is connected
 	try {
 		await connection.runTestQuery();
-		logger.success('Database appears to be correctly configured and functional.');
+		logger.success('Database appears to be correctly configured and operational.');
 	} catch (e) {
-		logger.error(`Error connecting to database. Startup cannot continue.`);
+		logger.error('Error connecting to database. Startup cannot continue.');
 		return;
 	}
 
 	// configure Express application
 	const app = express();
 	const port = process.env.PORT || 3000;
+
+	// set up JSON parsing
+	app.use(bodyParser.json());
 
 	// dynamically load endpoints from the endpoints folder
 	const endpoints = loader('./endpoints');
@@ -51,7 +55,7 @@ async function main() {
 	app.listen(port, () => {
 		logger.success(
 			`The Aperture Laboratories Messaging Service is now running at port ${port} and available to all ` +
-			`qualified Science personnel.`
+			`qualified Aperture Science personnel.`
 		);
 	});
 }
