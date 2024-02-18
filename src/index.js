@@ -4,6 +4,7 @@ const express = require('express');
 const loader = require('require-dir');
 const logger = require('./logging/logger');
 const bodyParser = require('body-parser');
+const { badJsonErrorHandler } = require('./error_handling/bad-json');
 
 async function main() {
 	logger.success('Startup initiated.');
@@ -31,9 +32,13 @@ async function main() {
 	// configure Express application
 	const app = express();
 	const port = process.env.PORT || 3000;
+	app.set('trust proxy', true);
 
 	// set up JSON parsing
-	app.use(bodyParser.json());
+	app.use(bodyParser.json({
+		limit: '10mb',
+	}));
+	app.use(badJsonErrorHandler);
 
 	// dynamically load endpoints from the endpoints folder
 	const endpoints = loader('./endpoints');
@@ -43,7 +48,8 @@ async function main() {
 	}
 
 	// 404 error endpoint
-	app.get('*', function (req, res) {
+	app.all('*', function (req, res) {
+		logger.warning(`${req.method} error: Client requested an invalid endpoint. (${req.ip})`);
 		res.status(404);
 		res.json({
 			error: 404,
