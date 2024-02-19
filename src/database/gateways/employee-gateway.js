@@ -17,7 +17,14 @@ async function isUsernameTaken(username) {
 	return result.length > 0;
 }
 
+async function getStoredPassword(username) {
+	let result = await query('select (password) from employees where username=?;', username);
+	if (result.length <= 0) return null;
+	return result[0].password;
+}
+
 module.exports = {
 	addNewEmployee,
 	isUsernameTaken,
+	getStoredPassword,
 };

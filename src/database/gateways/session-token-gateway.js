@@ -6,14 +6,16 @@ const { generateSessionToken } = require('../../helpers/session-token-generator'
 const { query, queryInsertReturnInsertedId, beginTransaction, commit, rollback } = require('../connection');
 const dotenv = require('dotenv');
 
-async function createNewSessionToken(employeeId) {
+async function createAndReturnNewSessionToken(employeeId) {
 	const token = generateSessionToken();
 
-	return await queryInsertReturnInsertedId(
+	await query(
 		'insert into session_tokens (token, employee_id, datetime_created, datetime_expires) ' +
 		'values (?, ?, ?, ?);',
 		token, employeeId, new Date(), getNewTokenExpiryDate(),
 	);
+
+	return token;
 }
 
 async function isTokenUnique(token) {
@@ -50,7 +52,7 @@ function getNewTokenExpiryDate() {
 }
 
 module.exports = {
-	createNewSessionToken,
+	createAndReturnNewSessionToken,
 	isTokenUnique,
 	doesEmployeeHaveToken,
 	refreshToken,
