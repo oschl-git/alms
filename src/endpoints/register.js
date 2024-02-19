@@ -2,12 +2,12 @@
  * Handles the /register endpoint
  */
 
-const express = require('express');
-const package = require('../../package.json');
-const employees = require('../database/gateways/employee-gateway');
 const { checkAllFieldsAreString } = require('../helpers/check-fields-are-string');
-const passwordHasher = require('../helpers/password-hasher');
+const employees = require('../database/gateways/employee-gateway');
+const express = require('express');
 const logger = require('../logging/logger');
+const package = require('../../package.json');
+const passwordHasher = require('../helpers/password-hasher');
 
 const router = express.Router();
 
