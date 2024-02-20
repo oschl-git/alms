@@ -2,6 +2,7 @@
  * Handles the /login endpoint
  */
 
+const jsonValidation = require('../helpers/json-validation');
 const express = require('express');
 const package = require('../../package.json');
 const logger = require('../logging/logger');
@@ -14,51 +15,71 @@ const router = express.Router();
 router.post('/', async function (req, res) {
 	const body = req.body;
 
-	if (!checkRequiredFieldsPresent(body)) {
+	if (!jsonValidation.checkFieldsArePresent(body.username, body.password)) {
 		res.status(400);
 		res.json({
 			error: 400,
-			message: 'Request JSON is missing required fields.',
+			message: 'JSON FIELDS MISSING',
 		});
-		logger.warning(`POST error: Required JSON fields missing at /login (${req.ip}).`);
+		logger.warning(`POST fail: Required JSON fields missing at /login. (${req.ip})`);
 		return;
 	}
 
-	const storedPassword = await employees.getStoredPassword(body.username);
+	if (!jsonValidation.checkFieldsAreString(body.username, body.password)) {
+		res.json({
+			error: 400,
+			message: 'ALL FIELDS MUST BE STRING',
+		});
+		logger.warning(`POST fail: Not all fields are string at /login. (${req.ip})`);
+		return;
+	}
 
-	if (storedPassword === null) {
+	const employee = await employees.getEmployeeObjectByUsername(body.username);
+
+	if (employee === null) {
 		res.status(401);
 		res.json({
 			error: 401,
-			message: 'User does not exist.',
+			message: 'USER DOES NOT EXIST',
 		});
-		logger.warning(`POST error: User doesn't exist at /login (${req.ip}).`);
+		logger.warning(`POST fail: User doesn't exist at /login. (${req.ip})`);
 		return;
 	}
 
-	if (passwordHasher.isPasswordValid(body.password, storedPassword)) {
-		const token = await sessionTokens.createAndReturnNewSessionToken();
+	if (passwordHasher.isPasswordValid(body.password, employee.password)) {
+		let token = null;
+		try {
+			token = await sessionTokens.createAndReturnNewSessionToken(employee.id);
+		} catch (e) {
+			res.status(500);
+			res.json({
+				error: 500,
+				message: 'INTERNAL DATABASE ERROR',
+			});
+			logger.error(`POST error: Error adding new session token at /login. (${req.ip})\n${e}`);
+			return;
+		}
 
 		logger.success(`POST OK: /login. (${req.ip})`);
+
 		res.status(200);
 		res.json({
 			token: token,
+			employee: {
+				username: employee.username,
+				name: employee.name,
+				surname: employee.surname,
+			},
 		});
 	} else {
 		res.status(401);
 		res.json({
 			error: 401,
-			message: 'Incorrect password.',
+			message: 'INCORRECT PASSWORD',
 		});
-		logger.warning(`POST error: Incorrect password submitted for usre ${body.username} at /login (${req.ip}).`);
+		logger.warning(`POST fail: Incorrect password submitted for user ${body.username} at /login. (${req.ip})`);
 		return;
 	}
 });
-
-function checkRequiredFieldsPresent(body) {
-	if (!body.username) return false;
-	if (!body.password) return false;
-	return true;
-}
 
 module.exports = router; 

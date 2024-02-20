@@ -2,7 +2,7 @@
  * Handles the /register endpoint
  */
 
-const { checkAllFieldsAreString } = require('../helpers/check-fields-are-string');
+const jsonValidation = require('../helpers/json-validation');
 const employees = require('../database/gateways/employee-gateway');
 const express = require('express');
 const logger = require('../logging/logger');
@@ -14,23 +14,23 @@ const router = express.Router();
 router.post('/', async function (req, res) {
 	const body = req.body;
 
-	if (!checkRequiredFieldsPresent(body)) {
+	if (!jsonValidation.checkFieldsArePresent(body.username, body.name, body.surname, body.password)) {
 		res.status(400);
 		res.json({
 			error: 400,
-			message: 'Request JSON is missing required fields.',
+			message: 'JSON FIELDS MISSING',
 		});
-		logger.warning(`POST error: Required JSON fields missing at /register (${req.ip}).`);
+		logger.warning(`POST fail: Required JSON fields missing at /register. (${req.ip})`);
 		return;
 	}
 
-	if (!checkAllFieldsAreString(body.username, body.name, body.surname, body.password)) {
+	if (!jsonValidation.checkFieldsAreString(body.username, body.name, body.surname, body.password)) {
 		res.status(400);
 		res.json({
 			error: 400,
-			message: 'All fields must be of type string.',
+			message: 'ALL FIELDS MUST BE STRING',
 		});
-		logger.warning(`POST error: Not all fields are string at /register. (${req.ip})`);
+		logger.warning(`POST fail: Not all fields are string at /register. (${req.ip})`);
 		return;
 	}
 
@@ -39,10 +39,10 @@ router.post('/', async function (req, res) {
 		res.status(400);
 		res.json({
 			error: 400,
-			message: 'Fields in request JSON do not match requirements.',
+			message: 'REQUIREMENTS NOT SATISFIED',
 			errors: errors,
 		});
-		logger.warning(`POST error: Fields did not match requirements for /register. (${req.ip})`);
+		logger.warning(`POST fail: Fields did not match requirements for /register. (${req.ip})`);
 		return;
 	}
 
@@ -50,9 +50,9 @@ router.post('/', async function (req, res) {
 		res.status(400);
 		res.json({
 			error: 400,
-			message: 'Username is already taken.',
+			message: 'USERNAME TAKEN',
 		});
-		logger.warning(`POST error: Attempted to insert a taken username at /register. (${req.ip})`);
+		logger.warning(`POST fail: Attempted to insert a taken username at /register. (${req.ip})`);
 		return;
 	}
 
@@ -70,9 +70,9 @@ router.post('/', async function (req, res) {
 		res.status(500);
 		res.json({
 			error: 500,
-			message: 'Error adding employee to database.',
+			message: 'INTERNAL DATABASE ERROR',
 		});
-		logger.error(`POST error: Error adding employee to database at /register. (${req.ip})`);
+		logger.error(`POST error: Error adding employee to database at /register. (${req.ip})\n${e}`);
 		return;
 	}
 
@@ -80,17 +80,9 @@ router.post('/', async function (req, res) {
 	res.status(200);
 	res.json({
 		response: 200,
-		message: "User successfully added.",
+		message: "OK",
 	});
 });
-
-function checkRequiredFieldsPresent(body) {
-	if (!body.username) return false;
-	if (!body.name) return false;
-	if (!body.surname) return false;
-	if (!body.password) return false;
-	return true;
-}
 
 function checkFieldsForErrors(body) {
 	let errors = [];
@@ -123,10 +115,10 @@ function checkPasswordRequirements(password) {
 	let errors = [];
 
 	if (String(password).length < 8) {
-		errors.push('Password must be longer than 8 characters.');
+		errors.push('Password must be at least 8 characters long.');
 	}
 	if (String(password).length > 48) {
-		errors.push('Password must be shorter than 48 characters.');
+		errors.push('Password must be shorter than 49 characters.');
 	}
 
 	return errors;

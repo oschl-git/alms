@@ -9,11 +9,19 @@ const dotenv = require('dotenv');
 async function createAndReturnNewSessionToken(employeeId) {
 	const token = generateSessionToken();
 
-	await query(
-		'insert into session_tokens (token, employee_id, datetime_created, datetime_expires) ' +
-		'values (?, ?, ?, ?);',
-		token, employeeId, new Date(), getNewTokenExpiryDate(),
-	);
+	beginTransaction();
+	try {
+		await clearTokenForEmployee(employeeId);
+		await query(
+			'insert into session_tokens (token, employee_id, datetime_created, datetime_expires) ' +
+			'values (?, ?, ?, ?);',
+			token, employeeId, new Date(), getNewTokenExpiryDate(),
+		);
+	} catch (e) {
+		rollback();
+		throw e;
+	}
+	commit();
 
 	return token;
 }
