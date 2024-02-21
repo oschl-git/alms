@@ -59,10 +59,18 @@ function getNewTokenExpiryDate() {
 	return new Date(Date.now() + validityLength);
 }
 
+async function isTokenActive(tokenString) {
+	const result = await query('select datetime_expires from session_tokens where token=?;', tokenString);
+	if (result.length <= 0) return null;
+	const token = result[0];
+	return new Date().getTime() < new Date(token.datetime_expires).getTime();
+}
+
 module.exports = {
 	createAndReturnNewSessionToken,
 	isTokenUnique,
 	doesEmployeeHaveToken,
 	refreshToken,
 	clearTokenForEmployee,
+	isTokenActive,
 };

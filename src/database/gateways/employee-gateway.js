@@ -21,13 +21,30 @@ async function getEmployeeObjectByUsername(username) {
 	const result = await query('select * from employees where username=?;', username);
 	if (result.length <= 0) return null;
 	const employee = result[0];
+	return mapResponseToObject(employee);
+}
+
+async function getEmployeeObjectBySessionToken(token) {
+	const result = await query(
+		'select employees.id, employees.username, employees.name, ' +
+		'employees.surname, employees.password, employees.ip ' +
+		'from employees ' +
+		'right join session_tokens on session_tokens.employee_id = employees.id ' +
+		'where token=?;',
+		token);
+	if (result.length <= 0) return null;
+	const employee = result[0];
+	return mapResponseToObject(employee);
+}
+
+function mapResponseToObject(response) {
 	return {
-		id: employee.id,
-		username: employee.username,
-		name: employee.name,
-		surname: employee.surname,
-		password: employee.password,
-		ip: employee.ip,
+		id: response.id,
+		username: response.username,
+		name: response.name,
+		surname: response.surname,
+		password: response.password,
+		ip: response.ip,
 	};
 }
 
@@ -35,4 +52,5 @@ module.exports = {
 	addNewEmployee,
 	isUsernameTaken,
 	getEmployeeObjectByUsername,
+	getEmployeeObjectBySessionToken,
 };
