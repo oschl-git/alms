@@ -1,5 +1,6 @@
 const employees = require('../database/gateways/employee-gateway');
 const sessionTokens = require('../database/gateways/session-token-gateway');
+const logger = require('../logging/logger');
 
 const Results = {
 	TOKEN_EXPIRED: 'TOKEN_EXPIRED',
@@ -44,3 +45,8 @@ async function authenticate(req, res) {
 
 	return employees.getEmployeeObjectBySessionToken(token);
 }
+
+module.exports = {
+	Results,
+	authenticate,
+};
