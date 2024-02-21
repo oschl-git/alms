@@ -3,8 +3,6 @@
  */
 
 const express = require('express');
-const package = require('../../package.json');
-const logger = require('../logging/logger');
 const authenticator = require('../helpers/authenticator');
 
 const router = express.Router();

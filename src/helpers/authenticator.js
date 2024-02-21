@@ -17,7 +17,7 @@ async function authenticate(req, res) {
 			error: 401,
 			message: 'ASAP TOKEN MISSING',
 		});
-		logger.warning(`${req.method} fail: Authentication token missing at ${req.path}. (${req.ip})`);
+		logger.warning(`${req.method} AUTH fail: Authentication token missing at ${req.originalUrl}. (${req.ip})`);
 		return Results.TOKEN_MISSING;
 	}
 
@@ -29,7 +29,7 @@ async function authenticate(req, res) {
 			error: 401,
 			message: 'BAD TOKEN',
 		});
-		logger.warning(`${req.method} fail: User supplied bad token at ${req.path}. (${req.ip})`);
+		logger.warning(`${req.method} AUTH fail: Client supplied bad token at ${req.originalUrl}. (${req.ip})`);
 		return Results.BAD_TOKEN;
 	}
 
@@ -39,7 +39,7 @@ async function authenticate(req, res) {
 			error: 401,
 			message: 'TOKEN EXPIRED',
 		});
-		logger.warning(`${req.method} fail: User supplied expired token at ${req.path}. (${req.ip})`);
+		logger.warning(`${req.method} AUTH fail: Client supplied expired token at ${req.originalUrl}. (${req.ip})`);
 		return Results.TOKEN_EXPIRED;
 	}
 
