@@ -16,7 +16,17 @@ function checkFieldsAreString(...fields) {
 	return true;
 }
 
+function checkFieldsAreArray(...fields) {
+	for (const field of fields) {
+		if (!Array.isArray(field)) {
+			return false;
+		}
+	}
+	return true;
+}
+
 module.exports = {
 	checkFieldsArePresent,
 	checkFieldsAreString,
+	checkFieldsAreArray,
 };

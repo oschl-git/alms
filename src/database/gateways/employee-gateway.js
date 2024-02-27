@@ -37,6 +37,13 @@ async function getEmployeeObjectBySessionToken(token) {
 	return mapResponseToObject(employee);
 }
 
+async function getEmployeeIdByUsername(username) {
+	const result = await query('select * from employees where username=?;', username);
+	if (result.length <= 0) return null;
+	const employee = result[0];
+	return employee.id;
+}
+
 function mapResponseToObject(response) {
 	return {
 		id: response.id,
@@ -53,4 +60,5 @@ module.exports = {
 	isUsernameTaken,
 	getEmployeeObjectByUsername,
 	getEmployeeObjectBySessionToken,
+	getEmployeeIdByUsername,
 };
