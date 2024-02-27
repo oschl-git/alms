@@ -5,12 +5,14 @@
 const { query, queryInsertReturnInsertedId, beginTransaction, commit, rollback } = require('../connection');
 const employees = require('../gateways/employee-gateway');
 
-async function createNewConversationWithUsers(name, users) {
+async function createNewConversationWithEmployees(name, usernames) {
+	const isGroup = usernames.length > 2;
+
 	beginTransaction();
 
 	try {
-		const conversationId = await createNewConversation(name);
-		for (const username of users) {
+		const conversationId = await createNewConversation(name, isGroup);
+		for (const username of usernames) {
 			await addNewConversationEmployeeRelation(conversationId, username);
 		}
 	}
@@ -18,20 +20,27 @@ async function createNewConversationWithUsers(name, users) {
 		rollback();
 		throw e;
 	}
+
 	commit();
 }
 
-async function createNewConversation(name) {
+async function createNewConversation(name, isGroup) {
 	return await queryInsertReturnInsertedId(
-		'insert into conversations(name, datetime_created) values (?,?);',
-		name, new Date(),
+		'insert into conversations (name, is_group, datetime_created) values (?,?,?);',
+		name, isGroup, new Date(),
 	);
 }
 
 async function addNewConversationEmployeeRelation(conversationId, employeeUsername) {
-	const employeeId = employees.getEmployeeIdByUsername(employeeUsername);
+	const employeeId = await employees.getEmployeeIdByUsername(employeeUsername);
 	await query(
-		'insert into conversation_participants (id_conversation, id_employee) values (?, ?);',
+		'insert into conversation_participants (id_conversation, id_employee) values (?,?);',
 		conversationId, employeeId,
 	);
 }
+
+module.exports = {
+	createNewConversationWithEmployees,
+	createNewConversation,
+	addNewConversationEmployeeRelation,
+};
