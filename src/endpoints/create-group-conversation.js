@@ -6,6 +6,7 @@ const express = require('express');
 const authenticator = require('../helpers/authenticator');
 const jsonValidation = require('../helpers/json-validation');
 const conversations = require('../database/gateways/conversation-gateway');
+const employees = require('../database/gateways/employee-gateway');
 const logger = require('../logging/logger');
 
 const router = express.Router();
@@ -38,8 +39,33 @@ router.post('/', async function (req, res) {
 		return;
 	}
 
+	if (await conversations.doesConversationExist(body.name)) {
+		res.status(400);
+		res.json({
+			error: 400,
+			message: 'CONVERSATION NAME TAKEN',
+		});
+		logger.warning(
+			`POST fail: Attempted to insert a conversation with a taken name at /create-group-conversation. (${req.ip})`
+		);
+		return;
+	}
+
 	const employees = body.employees.concat([employee.username]);
-	const filteredEmployees = employees.filter((value, index) => employees.indexOf(value) === index);
+	const filteredEmployees = [...new Set(employees)];
+
+	const nonexistentUsernames = await getNonexistentUsernames(filteredEmployees);
+
+	if (nonexistentUsernames.length > 0) {
+		res.status(400);
+		res.json({
+			error: 400,
+			message: 'EMPLOYEES DO NOT EXIST',
+			employees: nonexistentUsernames,
+		});
+		logger.warning(`POST fail: At least some employees do not exist at /create-group-conversation. (${req.ip})`);
+		return;
+	}
 
 	try {
 		await conversations.createNewConversationWithEmployees(body.name, filteredEmployees);
@@ -60,5 +86,17 @@ router.post('/', async function (req, res) {
 		message: "OK",
 	});
 });
+
+async function getNonexistentUsernames(usernames) {
+	let nonexistentUsernames = [];
+
+	for (const username of usernames) {
+		if (! await employees.isUsernameTaken(username)) {
+			nonexistentUsernames.push(username);
+		}
+	}
+
+	return nonexistentUsernames;
+}
 
 module.exports = router; 

@@ -13,12 +13,12 @@ async function addNewEmployee(username, name, surname, password, ip) {
 }
 
 async function isUsernameTaken(username) {
-	result = await query('select (id) from employees where username=?;', username);
+	result = await query('select (id) from employees where binary username=?;', username);
 	return result.length > 0;
 }
 
 async function getEmployeeObjectByUsername(username) {
-	const result = await query('select * from employees where username=?;', username);
+	const result = await query('select * from employees where binary username=?;', username);
 	if (result.length <= 0) return null;
 	const employee = result[0];
 	return mapResponseToObject(employee);
@@ -38,7 +38,7 @@ async function getEmployeeObjectBySessionToken(token) {
 }
 
 async function getEmployeeIdByUsername(username) {
-	const result = await query('select * from employees where username=?;', username);
+	const result = await query('select * from employees where binary username=?;', username);
 	if (result.length <= 0) return null;
 	const employee = result[0];
 	return employee.id;

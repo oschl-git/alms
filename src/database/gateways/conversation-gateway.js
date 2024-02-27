@@ -39,8 +39,14 @@ async function addNewConversationEmployeeRelation(conversationId, employeeUserna
 	);
 }
 
+async function doesConversationExist(name) {
+	result = await query('select (id) from conversations where binary name=?;', name);
+	return result.length > 0;
+}
+
 module.exports = {
 	createNewConversationWithEmployees,
 	createNewConversation,
 	addNewConversationEmployeeRelation,
+	doesConversationExist,
 };
