@@ -2,26 +2,27 @@
  * Handles the index (/) endpoint
  */
 
+const employees = require('../database/gateways/employee-gateway');
 const express = require('express');
 const logger = require('../logging/logger');
 const package = require('../../package.json');
+const session_tokens = require('../database/gateways/session-token-gateway');
 
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-	// TODO: Make the following two not 0 :)
-	const activeUsers = 0;
-	const totalUsers = 0;
+	const activeUsers = await session_tokens.getActiveSessionTokenCount();
+	const totalUsers = await employees.getRegisteredUserCount();
 
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
 	res.json({
 		status: 'All ALMS systems operational.',
 		stats: {
-			uptime: process.uptime(),
-			version: package.version,
 			activeUsers: activeUsers,
 			totalUsers: totalUsers,
+			uptime: process.uptime(),
+			version: package.version,
 		},
 	});
 });

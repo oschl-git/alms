@@ -44,6 +44,11 @@ async function getEmployeeIdByUsername(username) {
 	return employee.id;
 }
 
+async function getRegisteredUserCount() {
+	const result = await query('select count(id) as count from employees;');
+	return result[0].count;
+}
+
 function mapResponseToObject(response) {
 	return {
 		id: response.id,
@@ -61,4 +66,5 @@ module.exports = {
 	getEmployeeObjectByUsername,
 	getEmployeeObjectBySessionToken,
 	getEmployeeIdByUsername,
+	getRegisteredUserCount,
 };

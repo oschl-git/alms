@@ -50,6 +50,18 @@ async function clearTokenForEmployee(employeeId) {
 	);
 }
 
+async function isTokenActive(tokenString) {
+	const result = await query('select datetime_expires from session_tokens where token=?;', tokenString);
+	if (result.length <= 0) return null;
+	const token = result[0];
+	return new Date().getTime() < new Date(token.datetime_expires).getTime();
+}
+
+async function getActiveSessionTokenCount() {
+	const result = await query('select count(id) as count from session_tokens where datetime_expires>?;', new Date());
+	return result[0].count;
+}
+
 function getNewTokenExpiryDate() {
 	dotenv.config();
 
@@ -59,13 +71,6 @@ function getNewTokenExpiryDate() {
 	return new Date(Date.now() + validityLength);
 }
 
-async function isTokenActive(tokenString) {
-	const result = await query('select datetime_expires from session_tokens where token=?;', tokenString);
-	if (result.length <= 0) return null;
-	const token = result[0];
-	return new Date().getTime() < new Date(token.datetime_expires).getTime();
-}
-
 module.exports = {
 	createAndReturnNewSessionToken,
 	isTokenUnique,
@@ -73,4 +78,5 @@ module.exports = {
 	refreshToken,
 	clearTokenForEmployee,
 	isTokenActive,
+	getActiveSessionTokenCount,
 };
