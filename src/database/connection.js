@@ -2,8 +2,8 @@
  * Handles database connection, exports functions for running queries
  */
 
-const mysql = require('mysql2');
 const dotenv = require('dotenv');
+const mysql = require('mysql2');
 
 dotenv.config();
 

@@ -2,12 +2,11 @@
  * Handles the /register endpoint
  */
 
-const jsonValidation = require('../helpers/json-validation');
 const employees = require('../database/gateways/employee-gateway');
 const express = require('express');
+const jsonValidation = require('../error_handling/json-validation');
 const logger = require('../logging/logger');
-const package = require('../../package.json');
-const passwordHasher = require('../helpers/password-hasher');
+const passwordHasher = require('../security/password-hasher');
 
 const router = express.Router();
 
@@ -20,7 +19,7 @@ router.post('/', async function (req, res) {
 			error: 400,
 			message: 'JSON FIELDS MISSING',
 		});
-		logger.warning(`POST fail: Required JSON fields missing at /register. (${req.ip})`);
+		logger.warning(`${req.method} fail: Required JSON fields missing at ${req.originalUrl}. (${req.ip})`);
 		return;
 	}
 
@@ -30,7 +29,7 @@ router.post('/', async function (req, res) {
 			error: 400,
 			message: 'ALL FIELDS MUST BE STRING',
 		});
-		logger.warning(`POST fail: Not all fields are string at /register. (${req.ip})`);
+		logger.warning(`${req.method} fail: Not all fields are string at ${req.originalUrl}. (${req.ip})`);
 		return;
 	}
 
@@ -42,7 +41,7 @@ router.post('/', async function (req, res) {
 			message: 'REQUIREMENTS NOT SATISFIED',
 			errors: errors,
 		});
-		logger.warning(`POST fail: Fields did not match requirements for /register. (${req.ip})`);
+		logger.warning(`${req.method} fail: Fields did not match requirements at ${req.originalUrl}. (${req.ip})`);
 		return;
 	}
 
@@ -52,7 +51,7 @@ router.post('/', async function (req, res) {
 			error: 400,
 			message: 'USERNAME TAKEN',
 		});
-		logger.warning(`POST fail: Attempted to insert a taken username at /register. (${req.ip})`);
+		logger.warning(`${req.method} fail: Attempted to insert a taken username at ${req.originalUrl}. (${req.ip})`);
 		return;
 	}
 
@@ -72,11 +71,14 @@ router.post('/', async function (req, res) {
 			error: 500,
 			message: 'INTERNAL DATABASE ERROR',
 		});
-		logger.error(`POST error: Error adding employee to database at /register. (${req.ip})\n${e}`);
+		logger.error(
+			`${req.method} error: ` +
+			`Error adding new user to database at ${req.originalUrl}. (${req.ip})\n${e}`
+		);
 		return;
 	}
 
-	logger.success(`POST OK: Added new user at /register. (${req.ip})`);
+	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
 	res.json({
 		response: 200,

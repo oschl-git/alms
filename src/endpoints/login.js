@@ -2,13 +2,13 @@
  * Handles the /login endpoint
  */
 
-const jsonValidation = require('../helpers/json-validation');
-const express = require('express');
-const package = require('../../package.json');
-const logger = require('../logging/logger');
-const sessionTokens = require('../database/gateways/session-token-gateway');
 const employees = require('../database/gateways/employee-gateway');
-const passwordHasher = require('../helpers/password-hasher');
+const express = require('express');
+const jsonValidation = require('../error_handling/json-validation');
+const logger = require('../logging/logger');
+const package = require('../../package.json');
+const passwordHasher = require('../security/password-hasher');
+const sessionTokens = require('../database/gateways/session-token-gateway');
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.post('/', async function (req, res) {
 			error: 400,
 			message: 'JSON FIELDS MISSING',
 		});
-		logger.warning(`POST fail: Required JSON fields missing at /login. (${req.ip})`);
+		logger.warning(`${req.method} fail: Required JSON fields missing at ${req.originalUrl}. (${req.ip})`);
 		return;
 	}
 
@@ -30,7 +30,7 @@ router.post('/', async function (req, res) {
 			error: 400,
 			message: 'ALL FIELDS MUST BE STRING',
 		});
-		logger.warning(`POST fail: Not all fields are string at /login. (${req.ip})`);
+		logger.warning(`${req.method} fail: Not all fields are string at ${req.originalUrl}. (${req.ip})`);
 		return;
 	}
 
@@ -42,7 +42,7 @@ router.post('/', async function (req, res) {
 			error: 401,
 			message: 'USER DOES NOT EXIST',
 		});
-		logger.warning(`POST fail: User doesn't exist at /login. (${req.ip})`);
+		logger.warning(`${req.method} fail: User doesn't exist at ${req.originalUrl}. (${req.ip})`);
 		return;
 	}
 
@@ -56,12 +56,14 @@ router.post('/', async function (req, res) {
 				error: 500,
 				message: 'INTERNAL DATABASE ERROR',
 			});
-			logger.error(`POST error: Error adding new session token at /login. (${req.ip})\n${e}`);
+			logger.error(
+				`${req.method} error: ` +
+				`Error adding new session token to database at ${req.originalUrl}. (${req.ip})\n${e}`
+			);
 			return;
 		}
 
-		logger.success(`POST OK: /login. (${req.ip})`);
-
+		logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 		res.status(200);
 		res.json({
 			token: token,
@@ -77,7 +79,10 @@ router.post('/', async function (req, res) {
 			error: 401,
 			message: 'INCORRECT PASSWORD',
 		});
-		logger.warning(`POST fail: Incorrect password submitted for user ${body.username} at /login. (${req.ip})`);
+		logger.warning(
+			`${req.method} fail: ` +
+			`Incorrect password submitted for user ${body.username} at ${req.originalUrl}. (${req.ip})`
+		);
 		return;
 	}
 });

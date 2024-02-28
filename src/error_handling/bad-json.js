@@ -1,9 +1,11 @@
-function badJsonErrorHandler(err, req, res, next) {
-	if (!err instanceof SyntaxError) return;
+const logger = require('../logging/logger');
 
-	if (res.headersSent) {
+function badJsonErrorHandler(err, req, res, next) {
+	if (res.headersSent || !err instanceof SyntaxError) {
 		return next(err);
 	}
+
+	logger.warning(`${req.method} fail: Bad JSON submitted at ${req.originalUrl}. (${req.ip})`);
 	res.status(500);
 	res.json({
 		error: 400,

@@ -2,11 +2,11 @@
  * Handles the /create-group-conversation endpoint
  */
 
-const express = require('express');
-const authenticator = require('../helpers/authenticator');
-const jsonValidation = require('../helpers/json-validation');
+const authenticator = require('../security/authenticator');
 const conversations = require('../database/gateways/conversation-gateway');
 const employees = require('../database/gateways/employee-gateway');
+const express = require('express');
+const jsonValidation = require('../error_handling/json-validation');
 const logger = require('../logging/logger');
 
 const router = express.Router();
@@ -25,7 +25,7 @@ router.post('/', async function (req, res) {
 			error: 400,
 			message: 'JSON FIELDS MISSING',
 		});
-		logger.warning(`POST fail: Required JSON fields missing at /create-group-conversation. (${req.ip})`);
+		logger.warning(`${req.method} fail: Required JSON fields missing at ${req.originalUrl}. (${req.ip})`);
 		return;
 	}
 
@@ -35,7 +35,7 @@ router.post('/', async function (req, res) {
 			error: 400,
 			message: 'EMPLOYEES MUST BE ARRAY',
 		});
-		logger.warning(`POST fail: Employees field is not array at /create-group-conversation. (${req.ip})`);
+		logger.warning(`${req.method} fail: Employees field is not array at ${req.originalUrl}. (${req.ip})`);
 		return;
 	}
 
@@ -46,7 +46,8 @@ router.post('/', async function (req, res) {
 			message: 'CONVERSATION NAME TAKEN',
 		});
 		logger.warning(
-			`POST fail: Attempted to insert a conversation with a taken name at /create-group-conversation. (${req.ip})`
+			`${req.method} fail: ` +
+			`Attempted to insert a conversation with a taken name at ${req.originalUrl}. (${req.ip})`
 		);
 		return;
 	}
@@ -63,7 +64,7 @@ router.post('/', async function (req, res) {
 			message: 'EMPLOYEES DO NOT EXIST',
 			employees: nonexistentUsernames,
 		});
-		logger.warning(`POST fail: At least some employees do not exist at /create-group-conversation. (${req.ip})`);
+		logger.warning(`${req.method} fail: At least some employees do not exist at ${req.originalUrl}. (${req.ip})`);
 		return;
 	}
 
@@ -76,10 +77,13 @@ router.post('/', async function (req, res) {
 			error: 500,
 			message: 'INTERNAL DATABASE ERROR',
 		});
-		logger.error(`POST error: Error creating new conversation at /create-group-conversation. (${req.ip})\n${e}`);
+		logger.error(
+			`${req.method} error: Error adding new conversation to database at ${req.originalUrl}. (${req.ip})\n${e}`
+		);
 		return;
 	}
 
+	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
 	res.json({
 		response: 200,

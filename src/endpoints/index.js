@@ -3,21 +3,25 @@
  */
 
 const express = require('express');
-const package = require('../../package.json');
 const logger = require('../logging/logger');
+const package = require('../../package.json');
 
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-	logger.success(`GET OK: / (${req.ip}).`);
+	// TODO: Make the following two not 0 :)
+	const activeUsers = 0;
+	const totalUsers = 0;
+
+	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
 	res.json({
 		status: 'All ALMS systems operational.',
 		stats: {
 			uptime: process.uptime(),
 			version: package.version,
-			activeUsers: 0,
-			totalUsers: 0,
+			activeUsers: activeUsers,
+			totalUsers: totalUsers,
 		},
 	});
 });
