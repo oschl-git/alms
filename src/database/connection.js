@@ -18,7 +18,7 @@ const connection = mysql.createConnection({
  * Executes a query and returns its result.
  * @param {string} sql - The SQL query to run
  * @param  {...any} parameters - Parameters
- * @returns the result of the query
+ * @returns {Array} the result of the query
  */
 async function query(sql, ...parameters) {
 	let result = await connection.promise().query(sql, parameters);
@@ -58,10 +58,10 @@ function rollback() {
 }
 
 /**
- * Runs a testing query to verify that the database is available.
+ * Runs a testing query to verify that the database is available. Throws an exception if something goes wrong.
  */
 async function runTestQuery() {
-	await query('select 1');
+	await query('select 1;');
 }
 
 module.exports = {

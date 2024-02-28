@@ -5,6 +5,12 @@
 const { query, queryInsertReturnInsertedId, beginTransaction, commit, rollback } = require('../connection');
 const employees = require('../gateways/employee-gateway');
 
+/**
+ * Runs a transaction that creates a new conversation in the conversations table and then adds employees to it in the
+ * conversation-participants table.
+ * @param {string} name - Name for the conversation
+ * @param {string[]} usernames - Array of usernames of participants
+ */
 async function createNewConversationWithEmployees(name, usernames) {
 	const isGroup = usernames.length > 2;
 

@@ -6,6 +6,12 @@ const { generateSessionToken } = require('../../security/session-token-generator
 const { query, queryInsertReturnInsertedId, beginTransaction, commit, rollback } = require('../connection');
 const dotenv = require('dotenv');
 
+/**
+ * Runs a transaction that clears any existing tokens for the employee and then creates a new one. The new token is
+ * returned.
+ * @param {int} employeeId - ID of the employee
+ * @returns {string} the session token
+ */
 async function createAndReturnNewSessionToken(employeeId) {
 	const token = generateSessionToken();
 
