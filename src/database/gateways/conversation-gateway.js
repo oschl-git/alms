@@ -63,7 +63,6 @@ async function getAllConversationsForEmployee(employeeId) {
 		'left join conversations on conversation_participants.id_conversation = conversations.id ' +
 		'where id_employee = ?;',
 		employeeId);
-	if (result.length <= 0) return null;
 
 	let conversations = [];
 	for (const conversation of result) {
