@@ -10,14 +10,16 @@ const employees = require('../gateways/employee-gateway');
  * conversation-participants table.
  * @param {string} name - Name for the conversation
  * @param {string[]} usernames - Array of usernames of participants
+ * @return {int} - Id of the created conversation
  */
 async function createNewConversationWithEmployees(name, usernames) {
 	const isGroup = usernames.length > 2;
 
 	beginTransaction();
 
+	let conversationId = null;
 	try {
-		const conversationId = await createNewConversation(name, isGroup);
+		conversationId = await createNewConversation(name, isGroup);
 		for (const username of usernames) {
 			await addNewConversationEmployeeRelation(conversationId, username);
 		}
@@ -28,6 +30,8 @@ async function createNewConversationWithEmployees(name, usernames) {
 	}
 
 	commit();
+
+	return conversationId;
 }
 
 async function createNewConversation(name, isGroup) {
@@ -45,14 +49,63 @@ async function addNewConversationEmployeeRelation(conversationId, employeeUserna
 	);
 }
 
-async function doesConversationExist(name) {
-	result = await query('select (id) from conversations where binary name=?;', name);
-	return result.length > 0;
+async function getConversationById(id) {
+	const result = await query('select * from conversations where id=?;', id);
+	if (result.length <= 0) return null;
+	const conversation = result[0];
+	return mapResponseToObject(conversation);
+}
+
+async function getAllConversationsForEmployee(employeeId) {
+	const result = await query(
+		'select conversations.id, name, is_group, datetime_created ' +
+		'from conversation_participants ' +
+		'left join conversations on conversation_participants.id_conversation = conversations.id ' +
+		'where id_employee = ?;',
+		employeeId);
+	if (result.length <= 0) return null;
+
+	let conversations = [];
+	for (const conversation of result) {
+		conversations.push(mapResponseToObject(conversation));
+	}
+	return conversations;
+}
+
+async function getAllConversationsWithParticipantsForEmployee(employeeId) {
+	let conversationArray = await getAllConversationsForEmployee(employeeId);
+
+	for (let conversation of conversationArray) {
+		const participants = await employees.getEmployeesInConversation(conversation.id);
+
+		conversation.participants = [];
+		for (const participant of participants) {
+			conversation.participants.push({
+				id: participant.id,
+				username: participant.username,
+				name: participant.name,
+				surname: participant.surname,
+			});
+		}
+	}
+
+	return conversationArray;
+}
+
+function mapResponseToObject(response) {
+	return {
+		id: response.id,
+		name: response.name,
+		isGroup: response.is_group,
+		datetimeCreated: response.datetime_created,
+	};
 }
 
 module.exports = {
 	createNewConversationWithEmployees,
 	createNewConversation,
 	addNewConversationEmployeeRelation,
-	doesConversationExist,
+	getConversationById,
+	getAllConversationsForEmployee,
+	getAllConversationsWithParticipantsForEmployee,
 };

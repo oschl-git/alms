@@ -20,7 +20,7 @@ const Results = {
  * @returns Result if authentication fails, user object if it succeeds
  */
 async function authenticate(req, res) {
-	const token = req.body.token;
+	const token = req.headers.token;
 
 	if (!token) {
 		res.status(401);
@@ -38,7 +38,7 @@ async function authenticate(req, res) {
 		res.status(401);
 		res.json({
 			error: 401,
-			message: 'BAD TOKEN',
+			message: 'BAD ASAP TOKEN',
 		});
 		logger.warning(`${req.method} AUTH fail: Client supplied bad token at ${req.originalUrl}. (${req.ip})`);
 		return Results.BAD_TOKEN;
@@ -48,7 +48,7 @@ async function authenticate(req, res) {
 		res.status(401);
 		res.json({
 			error: 401,
-			message: 'TOKEN EXPIRED',
+			message: 'ASAP TOKEN EXPIRED',
 		});
 		logger.warning(`${req.method} AUTH fail: Client supplied expired token at ${req.originalUrl}. (${req.ip})`);
 		return Results.TOKEN_EXPIRED;

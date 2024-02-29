@@ -49,6 +49,23 @@ async function getRegisteredUserCount() {
 	return result[0].count;
 }
 
+async function getEmployeesInConversation(conversationId) {
+	const result = await query(
+		'select employees.id, employees.username, employees.name, ' +
+		'employees.surname, employees.password, employees.ip ' +
+		'from conversation_participants ' +
+		'left join employees on conversation_participants.id_employee = employees.id ' +
+		'where id_conversation = ?;',
+		conversationId);
+	if (result.length <= 0) return null;
+
+	let employees = [];
+	for (const employee of result) {
+		employees.push(mapResponseToObject(employee));
+	}
+	return employees;
+}
+
 function mapResponseToObject(response) {
 	return {
 		id: response.id,
@@ -67,4 +84,5 @@ module.exports = {
 	getEmployeeObjectBySessionToken,
 	getEmployeeIdByUsername,
 	getRegisteredUserCount,
+	getEmployeesInConversation,
 };

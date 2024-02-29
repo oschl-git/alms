@@ -39,19 +39,6 @@ router.post('/', async function (req, res) {
 		return;
 	}
 
-	if (await conversations.doesConversationExist(body.name)) {
-		res.status(400);
-		res.json({
-			error: 400,
-			message: 'CONVERSATION NAME TAKEN',
-		});
-		logger.warning(
-			`${req.method} fail: ` +
-			`Attempted to insert a conversation with a taken name at ${req.originalUrl}. (${req.ip})`
-		);
-		return;
-	}
-
 	// Add current user to the conversation
 	const employees = body.employees.concat([employee.username]);
 	// Remove duplicates
@@ -70,7 +57,13 @@ router.post('/', async function (req, res) {
 	}
 
 	try {
-		await conversations.createNewConversationWithEmployees(body.name, filteredEmployees);
+		const conversationId = await conversations.createNewConversationWithEmployees(body.name, filteredEmployees);
+
+		logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
+		res.status(200);
+		res.json({
+			conversationId: conversationId,
+		});
 	}
 	catch (e) {
 		res.status(500);
@@ -81,15 +74,7 @@ router.post('/', async function (req, res) {
 		logger.error(
 			`${req.method} error: Error adding new conversation to database at ${req.originalUrl}. (${req.ip})\n${e}`
 		);
-		return;
 	}
-
-	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
-	res.status(200);
-	res.json({
-		response: 200,
-		message: "OK",
-	});
 });
 
 async function getNonexistentUsernames(usernames) {
