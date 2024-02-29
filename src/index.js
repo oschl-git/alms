@@ -1,10 +1,12 @@
 const { badJsonErrorHandler } = require('./error_handling/bad-json');
+const { rateLimit } = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const connection = require('./database/connection');
 const dotenv = require('dotenv');
 const express = require('express');
 const loader = require('require-dir');
 const logger = require('./logging/logger');
+const { tooManyRequestsResponse } = require('./error_handling/too-many-requests');
 
 async function main() {
 	logger.success('Startup initiated.');
@@ -39,6 +41,17 @@ async function main() {
 		limit: '10mb',
 	}));
 	app.use(badJsonErrorHandler);
+
+	// set up rate limiting
+	const limiter = rateLimit({
+		windowMs: 1 * 60 * 1000,
+		max: 100,
+		standardHeaders: true,
+		legacyHeaders: false,
+		message: tooManyRequestsResponse,
+	});
+	app.use(limiter);
+
 
 	// dynamically load endpoints from the endpoints folder
 	const endpoints = loader('./endpoints');
