@@ -52,11 +52,12 @@ router.post('/', async function (req, res) {
 		return;
 	}
 
+	// Add current user to the conversation
 	const employees = body.employees.concat([employee.username]);
+	// Remove duplicates
 	const filteredEmployees = [...new Set(employees)];
 
 	const nonexistentUsernames = await getNonexistentUsernames(filteredEmployees);
-
 	if (nonexistentUsernames.length > 0) {
 		res.status(400);
 		res.json({

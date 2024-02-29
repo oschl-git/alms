@@ -1,3 +1,7 @@
+/**
+ * Handles logging.
+ */
+
 const dotenv = require('dotenv');
 const path = require('path');
 

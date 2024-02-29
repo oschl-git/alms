@@ -1,3 +1,7 @@
+/**
+ * Handles password hashing
+ */
+
 const crypto = require('crypto');
 
 function hashPassword(password) {

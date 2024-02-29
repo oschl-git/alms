@@ -49,7 +49,7 @@ async function main() {
 
 	// 404 error endpoint
 	app.all('*', function (req, res) {
-		logger.warning(`${req.method} error: Client requested an invalid endpoint. (${req.ip})`);
+		logger.warning(`${req.method} error: Client requested an invalid endpoint: ${req.originalUrl}. (${req.ip})`);
 		res.status(404);
 		res.json({
 			error: 404,

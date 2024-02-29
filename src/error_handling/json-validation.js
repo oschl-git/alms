@@ -1,3 +1,7 @@
+/**
+ * Module with various JSON checks
+ */
+
 function checkFieldsArePresent(...fields) {
 	for (const field of fields) {
 		if (!field) {

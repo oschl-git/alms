@@ -1,3 +1,7 @@
+/**
+ * Handles writing text to files
+ */
+
 const fs = require('fs');
 
 function writeLogMessageToFile(message, filepath) {

@@ -1,3 +1,7 @@
+/**
+ * Handles generating session tokens
+ */
+
 const crypto = require('crypto');
 
 function generateSessionToken() {

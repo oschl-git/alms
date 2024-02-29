@@ -1,3 +1,7 @@
+/**
+ * Middleware that handles requests with an invalid JSON
+ */
+
 const logger = require('../logging/logger');
 
 function badJsonErrorHandler(err, req, res, next) {
