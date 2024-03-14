@@ -19,7 +19,7 @@ async function createAndReturnNewSessionToken(employeeId) {
 	try {
 		await clearTokenForEmployee(employeeId);
 		await query(
-			'insert into session_tokens (token, employee_id, datetime_created, datetime_expires) ' +
+			'insert into session_tokens (token, id_employee, datetime_created, datetime_expires) ' +
 			'values (?, ?, ?, ?);',
 			token, employeeId, new Date(), getNewTokenExpiryDate(),
 		);
@@ -38,7 +38,7 @@ async function isTokenUnique(token) {
 }
 
 async function doesEmployeeHaveToken(employeeId) {
-	result = await query('select (id) from session_tokens where employee_id=?;', employeeId);
+	result = await query('select (id) from session_tokens where id_employee=?;', employeeId);
 	return result.length > 0;
 }
 
@@ -51,7 +51,7 @@ async function refreshToken(token) {
 
 async function clearTokenForEmployee(employeeId) {
 	await query(
-		'delete from session_tokens where employee_id=?',
+		'delete from session_tokens where id_employee=?',
 		employeeId,
 	);
 }
