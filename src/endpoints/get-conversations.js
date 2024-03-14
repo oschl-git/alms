@@ -1,5 +1,5 @@
 /**
- * Handles the index (/) endpoint
+ * Handles the /get-conversations endpoint
  */
 
 const express = require('express');

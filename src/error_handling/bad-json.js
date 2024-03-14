@@ -10,7 +10,7 @@ function badJsonErrorHandler(err, req, res, next) {
 	}
 
 	logger.warning(`${req.method} fail: Bad JSON submitted at ${req.originalUrl}. (${req.ip})`);
-	res.status(500);
+	res.status(400);
 	res.json({
 		error: 400,
 		message: 'Bad JSON.',

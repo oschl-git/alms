@@ -71,6 +71,23 @@ async function getAllConversationsForEmployee(employeeId) {
 	return conversations;
 }
 
+async function getConversationBetweenTwoEmployees(username1, username2) {
+	const result = await query(
+		'select c.id, c.name, c.is_group, c.datetime_created ' +
+		'from conversations c ' +
+		'join conversation_participants cp1 on c.id = cp1.id_conversation ' +
+		'join conversation_participants cp2 on c.id = cp2.id_conversation ' +
+		'join employees e1 on cp1.id_employee = e1.id ' +
+		'join employees e2 on cp2.id_employee = e2.id ' +
+		'where e1.username = ? ' +
+		'and e2.username = ?;',
+		username1, username2
+	);
+
+	if (result.length <= 0) return null;
+	return mapResponseToObject(result[0]);
+}
+
 async function getAllConversationsWithParticipantsForEmployee(employeeId) {
 	let conversationArray = await getAllConversationsForEmployee(employeeId);
 
@@ -107,4 +124,5 @@ module.exports = {
 	getConversationById,
 	getAllConversationsForEmployee,
 	getAllConversationsWithParticipantsForEmployee,
+	getConversationBetweenTwoEmployees,
 };
