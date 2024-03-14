@@ -89,6 +89,11 @@ router.post('/', async function (req, res) {
 function checkFieldsForErrors(body) {
 	let errors = [];
 
+	const pattern = /^[A-Za-z0-9]+$/;
+	if (!pattern.test(body.username)) {
+		errors.push('Username contains invalid characters. Only English letters and numbers are allowed.');
+	}
+
 	if (String(body.username).length < 2) {
 		errors.push('Username must be longer than 2 characters.');
 	}
