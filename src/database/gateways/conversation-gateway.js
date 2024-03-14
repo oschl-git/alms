@@ -56,13 +56,19 @@ async function getConversationById(id) {
 	return mapResponseToObject(conversation);
 }
 
-async function getAllConversationsForEmployee(employeeId) {
-	const result = await query(
+async function getAllConversationsForEmployee(employeeId, onlyGroup = false) {
+	let query = (
 		'select conversations.id, name, is_group, datetime_created ' +
 		'from conversation_participants ' +
 		'left join conversations on conversation_participants.id_conversation = conversations.id ' +
-		'where id_employee = ?;',
-		employeeId);
+		'where id_employee = ?'
+	);
+	if (onlyGroup) {
+		query += ' and is_group = 1';
+	}
+	query += ';';
+
+	const result = await query(query, employeeId);
 
 	let conversations = [];
 	for (const conversation of result) {
@@ -88,8 +94,8 @@ async function getConversationBetweenTwoEmployees(username1, username2) {
 	return mapResponseToObject(result[0]);
 }
 
-async function getAllConversationsWithParticipantsForEmployee(employeeId) {
-	let conversationArray = await getAllConversationsForEmployee(employeeId);
+async function getAllConversationsWithParticipantsForEmployee(employeeId, onlyGroup = false) {
+	let conversationArray = await getAllConversationsForEmployee(employeeId, onlyGroup);
 
 	for (let conversation of conversationArray) {
 		const participants = await employees.getEmployeesInConversation(conversation.id);

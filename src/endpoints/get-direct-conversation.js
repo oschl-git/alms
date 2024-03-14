@@ -34,6 +34,7 @@ router.get('/:employeeUsername', async function (req, res) {
 			logger.error(
 				`${req.method} error: Failed getting conversation after creating it at ${req.originalUrl}. (${req.ip})`
 			);
+			return;
 		}
 	}
 

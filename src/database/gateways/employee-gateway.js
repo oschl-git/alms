@@ -29,7 +29,7 @@ async function getEmployeeObjectBySessionToken(token) {
 		'select employees.id, employees.username, employees.name, ' +
 		'employees.surname, employees.password, employees.ip ' +
 		'from employees ' +
-		'right join session_tokens on session_tokens.employee_id = employees.id ' +
+		'right join session_tokens on session_tokens.id_employee = employees.id ' +
 		'where token=?;',
 		token);
 	if (result.length <= 0) return null;

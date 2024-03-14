@@ -52,7 +52,6 @@ async function main() {
 	});
 	app.use(limiter);
 
-
 	// dynamically load endpoints from the endpoints folder
 	const endpoints = loader('./endpoints');
 	for (const endpoint in endpoints) {
