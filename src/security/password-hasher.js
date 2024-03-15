@@ -1,9 +1,14 @@
 /**
- * Handles password hashing
+ * Handles password hashing and verification
  */
 
 const crypto = require('crypto');
 
+/**
+ * 
+ * @param {string} password - The password to hash 
+ * @returns {string} the hashed password
+ */
 function hashPassword(password) {
 	const salt = crypto.randomBytes(16).toString('hex');
 	const hash = crypto.scryptSync(password, salt, 64).toString('hex');
@@ -11,7 +16,13 @@ function hashPassword(password) {
 	return salt + hash;
 }
 
-function isPasswordValid(password, storedPassword) {
+/**
+ * 
+ * @param {string} password - The password submitted by user, plain text 
+ * @param {string} storedPassword - Stored hashed password
+ * @returns {boolean} whether passwords match
+ */
+function doPasswordsMatch(password, storedPassword) {
 	const salt = storedPassword.substring(0, 32);
 	const storedHash = storedPassword.substring(32, 160);
 
@@ -22,5 +33,5 @@ function isPasswordValid(password, storedPassword) {
 
 module.exports = {
 	hashPassword,
-	isPasswordValid,
+	doPasswordsMatch,
 };

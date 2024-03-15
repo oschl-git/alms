@@ -23,7 +23,8 @@ async function createAndReturnNewSessionToken(employeeId) {
 			'values (?, ?, ?, ?);',
 			token, employeeId, new Date(), getNewTokenExpiryDate(),
 		);
-	} catch (e) {
+	}
+	catch (e) {
 		rollback();
 		throw e;
 	}

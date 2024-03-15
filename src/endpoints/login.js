@@ -46,11 +46,12 @@ router.post('/', async function (req, res) {
 		return;
 	}
 
-	if (passwordHasher.isPasswordValid(body.password, employee.password)) {
+	if (passwordHasher.doPasswordsMatch(body.password, employee.password)) {
 		let token = null;
 		try {
 			token = await sessionTokens.createAndReturnNewSessionToken(employee.id);
-		} catch (e) {
+		}
+		catch (e) {
 			res.status(500);
 			res.json({
 				error: 500,

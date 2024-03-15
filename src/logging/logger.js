@@ -37,7 +37,8 @@ function log(message) {
 
 	try {
 		writeLogMessageToFile(message, filePath);
-	} catch (e) {
+	}
+	catch (e) {
 		console.error(`ALMS<ERROR> Attempted to write to log but failed. ${e}`);
 	}
 }

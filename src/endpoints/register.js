@@ -65,7 +65,8 @@ router.post('/', async function (req, res) {
 			hashedPassword,
 			req.ip
 		);
-	} catch (e) {
+	}
+	catch (e) {
 		res.status(500);
 		res.json({
 			error: 500,

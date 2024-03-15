@@ -26,7 +26,8 @@ async function main() {
 	try {
 		await connection.runTestQuery();
 		logger.success('Database appears to be correctly configured and operational.');
-	} catch (e) {
+	}
+	catch (e) {
 		logger.error('Error connecting to database. Startup cannot continue.');
 		return;
 	}
