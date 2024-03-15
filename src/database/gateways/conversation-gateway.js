@@ -36,8 +36,8 @@ async function createNewConversationWithEmployees(name, usernames) {
 
 async function createNewConversation(name, isGroup) {
 	return await queryInsertReturnInsertedId(
-		'insert into conversations (name, is_group, datetime_created) values (?,?,?);',
-		name, isGroup, new Date(),
+		'insert into conversations (name, is_group) values (?,?);',
+		name, isGroup,
 	);
 }
 
