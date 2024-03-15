@@ -1,4 +1,4 @@
--- MySQL 8.0.36 dump
+-- Adminer 4.8.1 MySQL 8.0.36 dump
 
 SET NAMES utf8;
 SET time_zone = '+00:00';
@@ -27,7 +27,8 @@ CREATE TABLE `conversations` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `is_group` tinyint(1) NOT NULL,
-  `datetime_created` datetime NOT NULL,
+  `datetime_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `datetime_updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -60,6 +61,17 @@ CREATE TABLE `messages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+DELIMITER ;;
+
+CREATE TRIGGER `update_datetime_updated` AFTER INSERT ON `messages` FOR EACH ROW
+BEGIN
+    UPDATE conversations
+    SET datetime_updated = NOW()
+    WHERE id = NEW.id_conversation;
+END;;
+
+DELIMITER ;
+
 DROP TABLE IF EXISTS `session_tokens`;
 CREATE TABLE `session_tokens` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -74,4 +86,4 @@ CREATE TABLE `session_tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- 2024-03-14 16:29:11
+-- 2024-03-15 08:11:26
