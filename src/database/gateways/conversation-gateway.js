@@ -114,6 +114,14 @@ async function getAllConversationsWithParticipantsForEmployee(employeeId, onlyGr
 	return conversationArray;
 }
 
+async function doesEmployeeHaveAccess(employeeId, conversationId) {
+	result = await query(
+		'select (id) from conversation_participants where id_conversation=? & id_employee=?;',
+		conversationId, employeeId
+	);
+	return result.length > 0;
+}
+
 function mapResponseToObject(response) {
 	return {
 		id: response.id,
@@ -131,4 +139,5 @@ module.exports = {
 	getAllConversationsForEmployee,
 	getAllConversationsWithParticipantsForEmployee,
 	getConversationBetweenTwoEmployees,
+	doesEmployeeHaveAccess,
 };

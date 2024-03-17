@@ -6,8 +6,8 @@ const { query, queryInsertReturnInsertedId, beginTransaction, commit, rollback }
 
 async function addNewMessage(employeeId, conversationId, content) {
 	return await queryInsertReturnInsertedId(
-		'insert into messages (id_employee, id_conversation, content) values (?,?,?);',
-		employeeId, conversationId, content
+		'insert into messages (id_employee, id_conversation, content, datetime_sent) values (?,?,?,?);',
+		employeeId, conversationId, content, new Date()
 	);
 }
 

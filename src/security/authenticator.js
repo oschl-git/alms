@@ -54,6 +54,8 @@ async function authenticate(req, res) {
 		return Results.TOKEN_EXPIRED;
 	}
 
+	await sessionTokens.refreshToken(token);
+
 	return employees.getEmployeeObjectBySessionToken(token);
 }
 
