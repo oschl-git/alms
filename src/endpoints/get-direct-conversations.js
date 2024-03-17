@@ -1,5 +1,5 @@
 /**
- * Handles the /get-conversations endpoint
+ * Handles the /get-direct-conversations endpoint
  */
 
 const express = require('express');
@@ -18,7 +18,7 @@ router.get('/', async function (req, res) {
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
 	res.json({
-		conversations: await conversations.getAllConversationsWithParticipantsForEmployee(employee.id),
+		conversations: await conversations.getAllConversationsWithParticipantsForEmployee(employee.id, false),
 	});
 });
 

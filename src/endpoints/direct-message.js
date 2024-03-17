@@ -1,11 +1,12 @@
 /**
- * Handles the /get-direct-conversation endpoint
+ * Handles the /direct-message endpoint
  */
 
+const authenticator = require('../security/authenticator');
+const conversations = require('../database/gateways/conversation-gateway');
+const employees = require('../database/gateways/employee-gateway');
 const express = require('express');
 const logger = require('../logging/logger');
-const conversations = require('../database/gateways/conversation-gateway');
-const authenticator = require('../security/authenticator');
 
 const router = express.Router();
 
@@ -14,6 +15,19 @@ router.get('/:employeeUsername', async function (req, res) {
 	if (typeof employee !== 'object') {
 		return;
 	};
+
+	if (! await employees.isUsernameTaken(req.params.employeeUsername)) {
+		res.status(400);
+		res.json({
+			error: 400,
+			message: 'EMPLOYEE DOES NOT EXIST',
+		});
+		logger.warning(
+			`${req.method} fail: Attempted to get direct message with ` +
+			`a nonexistent employee at ${req.originalUrl}. (${req.ip})`
+		);
+		return;
+	}
 
 	let conversation = await conversations.getConversationBetweenTwoEmployees(
 		employee.username, req.params.employeeUsername

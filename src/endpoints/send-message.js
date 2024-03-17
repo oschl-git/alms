@@ -4,11 +4,10 @@
 
 const authenticator = require('../security/authenticator');
 const conversations = require('../database/gateways/conversation-gateway');
-const employees = require('../database/gateways/employee-gateway');
-const messages = require('../database/gateways/message-gateway');
 const express = require('express');
 const jsonValidation = require('../error_handling/json-validation');
 const logger = require('../logging/logger');
+const messages = require('../database/gateways/message-gateway');
 
 const router = express.Router();
 

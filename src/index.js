@@ -66,7 +66,7 @@ async function main() {
 		res.status(404);
 		res.json({
 			error: 404,
-			message: 'Invalid endpoint.',
+			message: 'ENDPOINT INVALID',
 		});
 	});
 
