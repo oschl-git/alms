@@ -57,7 +57,7 @@ async function getEmployeesInConversation(conversationId) {
 		'left join employees on conversation_participants.id_employee = employees.id ' +
 		'where id_conversation = ?;',
 		conversationId);
-	if (result.length <= 0) return null;
+	if (result.length <= 0) return [];
 
 	let employees = [];
 	for (const employee of result) {

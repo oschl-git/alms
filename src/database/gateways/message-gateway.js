@@ -19,7 +19,27 @@ async function getMessagesFromConversation(conversationId, limit = 100) {
 		'order by datetime_sent desc ' +
 		'limit ?;',
 		conversationId, limit);
-	if (result.length <= 0) return null;
+	if (result.length <= 0) return [];
+
+	let messages = [];
+	for (const message of result) {
+		messages.push(mapResponseToObject(message));
+	}
+	return messages;
+}
+
+async function getUnreadMessagesFromConversation(conversationId, userId, limit = 100) {
+	const result = await query(
+		'select m.id, e.username, e.name, e.surname, m.content, m.datetime_sent from messages m ' +
+		'left join employees e on m.id_employee = e.id ' +
+		'left join read_messages rm on m.id = rm.id_message ' +
+		'and rm.id_employee = ? ' +
+		'where rm.id_message is null ' +
+		'and m.id_conversation = ? ' +
+		'order by datetime_sent desc ' +
+		'limit ?;',
+		userId, conversationId, limit);
+	if (result.length <= 0) return [];
 
 	let messages = [];
 	for (const message of result) {
@@ -68,4 +88,5 @@ module.exports = {
 	getMessagesFromConversation,
 	markMessageAsRead,
 	markMessagesAsRead,
+	getUnreadMessagesFromConversation,
 };
