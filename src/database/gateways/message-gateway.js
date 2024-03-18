@@ -11,6 +11,35 @@ async function addNewMessage(employeeId, conversationId, content) {
 	);
 }
 
+async function getMessagesFromConversation(conversationId, limit = 100) {
+	const result = await query(
+		'select m.id, e.username, e.name, e.surname, m.content, m.datetime_sent from messages m ' +
+		'left join employees e on m.id_employee = e.id ' +
+		'where id_conversation = ? ' +
+		'order by datetime_sent desc ' +
+		'limit ?;',
+		conversationId, limit);
+	if (result.length <= 0) return null;
+
+	let messages = [];
+	for (const message of result) {
+		messages.push(mapResponseToObject(message));
+	}
+	return messages;
+}
+
+function mapResponseToObject(response) {
+	return {
+		id: response.id,
+		username: response.username,
+		name: response.name,
+		surname: response.surname,
+		content: response.content,
+		datetimeSent: response.datetime_sent,
+	};
+}
+
 module.exports = {
 	addNewMessage,
+	getMessagesFromConversation,
 };
