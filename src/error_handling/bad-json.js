@@ -13,7 +13,7 @@ function badJsonErrorHandler(err, req, res, next) {
 	res.status(400);
 	res.json({
 		error: 400,
-		message: 'Bad JSON.',
+		message: 'BAD JSON',
 	});
 }
 

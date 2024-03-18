@@ -28,6 +28,30 @@ async function getMessagesFromConversation(conversationId, limit = 100) {
 	return messages;
 }
 
+async function markMessageAsRead(employeeId, messageId) {
+	await query(
+		'insert ignore into read_messages (id_employee, id_message, datetime_read) ' +
+		'values (?,?,?);',
+		employeeId, messageId, new Date()
+	);
+}
+
+async function markMessagesAsRead(employeeId, messages) {
+	beginTransaction();
+
+	try {
+		for (const message of messages) {
+			await markMessageAsRead(employeeId, message.id);
+		}
+	}
+	catch (e) {
+		rollback();
+		throw e;
+	}
+
+	commit();
+}
+
 function mapResponseToObject(response) {
 	return {
 		id: response.id,
@@ -42,4 +66,6 @@ function mapResponseToObject(response) {
 module.exports = {
 	addNewMessage,
 	getMessagesFromConversation,
+	markMessageAsRead,
+	markMessagesAsRead,
 };

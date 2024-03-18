@@ -2,11 +2,11 @@
  * Handles the /get-messages endpoint
  */
 
+const authenticator = require('../security/authenticator');
+const conversations = require('../database/gateways/conversation-gateway');
 const express = require('express');
 const logger = require('../logging/logger');
 const messages = require('../database/gateways/message-gateway');
-const conversations = require('../database/gateways/conversation-gateway');
-const authenticator = require('../security/authenticator');
 
 const router = express.Router();
 
@@ -31,11 +31,14 @@ router.get('/:conversationId', async function (req, res) {
 		return;
 	}
 
+	const retrievedMessages = await messages.getMessagesFromConversation(params.conversationId);
+
+	await messages.markMessagesAsRead(employee.id, retrievedMessages);
 
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
 	res.json({
-		conversations: await messages.getMessagesFromConversation(params.conversationId),
+		messages: retrievedMessages,
 	});
 });
 

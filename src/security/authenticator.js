@@ -8,7 +8,7 @@ const logger = require('../logging/logger');
 
 const Results = {
 	TOKEN_EXPIRED: 'TOKEN_EXPIRED',
-	BAD_TOKEN: 'BAD_TOKEN',
+	TOKEN_BAD: 'TOKEN_BAD',
 	TOKEN_MISSING: 'TOKEN_MISSING',
 };
 
@@ -26,7 +26,7 @@ async function authenticate(req, res) {
 		res.status(401);
 		res.json({
 			error: 401,
-			message: 'ASAP TOKEN MISSING',
+			message: 'AUTH TOKEN MISSING',
 		});
 		logger.warning(`${req.method} AUTH fail: Authentication token missing at ${req.originalUrl}. (${req.ip})`);
 		return Results.TOKEN_MISSING;
@@ -38,17 +38,17 @@ async function authenticate(req, res) {
 		res.status(401);
 		res.json({
 			error: 401,
-			message: 'BAD ASAP TOKEN',
+			message: 'AUTH TOKEN BAD',
 		});
 		logger.warning(`${req.method} AUTH fail: Client supplied bad token at ${req.originalUrl}. (${req.ip})`);
-		return Results.BAD_TOKEN;
+		return Results.TOKEN_BAD;
 	}
 
 	if (!isTokenActive) {
 		res.status(401);
 		res.json({
 			error: 401,
-			message: 'ASAP TOKEN EXPIRED',
+			message: 'AUTH TOKEN EXPIRED',
 		});
 		logger.warning(`${req.method} AUTH fail: Client supplied expired token at ${req.originalUrl}. (${req.ip})`);
 		return Results.TOKEN_EXPIRED;

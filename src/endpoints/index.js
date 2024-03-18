@@ -17,7 +17,7 @@ router.get('/', async function (req, res) {
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
 	res.json({
-		status: 'All ALMS systems operational.',
+		status: 'ALL ALMS SYSTEMS OPERATIONAL',
 		stats: {
 			activeUsers: activeUsers,
 			totalUsers: totalUsers,
