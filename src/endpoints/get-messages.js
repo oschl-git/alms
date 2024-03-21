@@ -37,9 +37,7 @@ router.get('/:conversationId', async function (req, res) {
 
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
-	res.json({
-		messages: retrievedMessages,
-	});
+	res.json(retrievedMessages);
 });
 
 module.exports = router; 

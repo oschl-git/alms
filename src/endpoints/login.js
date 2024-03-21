@@ -69,6 +69,7 @@ router.post('/', async function (req, res) {
 		res.json({
 			token: token,
 			employee: {
+				id: employee.id,
 				username: employee.username,
 				name: employee.name,
 				surname: employee.surname,
