@@ -17,9 +17,7 @@ router.get('/', async function (req, res) {
 
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
-	res.json({
-		conversations: await conversations.getAllConversationsWithParticipantsForEmployee(employee.id, false),
-	});
+	res.json(await conversations.getAllConversationsWithParticipantsForEmployee(employee.id, false));
 });
 
 module.exports = router; 

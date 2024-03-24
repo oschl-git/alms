@@ -82,17 +82,7 @@ async function getAllConversationsWithParticipantsForEmployee(employeeId, onlyGr
 	let conversationArray = await getAllConversationsForEmployee(employeeId, onlyGroup);
 
 	for (let conversation of conversationArray) {
-		const participants = await employees.getEmployeesInConversation(conversation.id);
-
-		conversation.participants = [];
-		for (const participant of participants) {
-			conversation.participants.push({
-				id: participant.id,
-				username: participant.username,
-				name: participant.name,
-				surname: participant.surname,
-			});
-		}
+		conversation.participants = await getParticipantsForConversation(conversation.id);
 	}
 
 	return conversationArray;
@@ -112,7 +102,11 @@ async function getConversationBetweenTwoEmployees(username1, username2) {
 	);
 
 	if (result.length <= 0) return null;
-	return mapResponseToObject(result[0]);
+	let conversation = mapResponseToObject(result[0]);
+
+	conversation.participants = await getParticipantsForConversation(conversation.id);
+
+	return conversation;
 }
 
 async function doesEmployeeHaveAccess(employeeId, conversationId) {
@@ -121,6 +115,22 @@ async function doesEmployeeHaveAccess(employeeId, conversationId) {
 		conversationId, employeeId
 	);
 	return result.length > 0;
+}
+
+async function getParticipantsForConversation(conversationId) {
+	const participants = await employees.getEmployeesInConversation(conversationId);
+
+	var output = [];
+	for (const participant of participants) {
+		output.push({
+			id: participant.id,
+			username: participant.username,
+			name: participant.name,
+			surname: participant.surname,
+		});
+	}
+
+	return output;
 }
 
 function mapResponseToObject(response) {

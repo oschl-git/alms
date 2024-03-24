@@ -70,7 +70,7 @@ router.post('/', async function (req, res) {
 		res.status(500);
 		res.json({
 			error: 500,
-			message: 'INTERNAL DATABASE ERROR',
+			message: 'INTERNAL ALMS ERROR',
 		});
 		logger.error(
 			`${req.method} error: ` +

@@ -1,5 +1,5 @@
 /**
- * Handles the /direct-message endpoint
+ * Handles the /get-direct-conversation endpoint
  */
 
 const authenticator = require('../security/authenticator');
@@ -43,7 +43,7 @@ router.get('/:employeeUsername', async function (req, res) {
 			res.status(500);
 			res.json({
 				error: 500,
-				message: 'INTERNAL DATABASE ERROR',
+				message: 'INTERNAL ALMS ERROR',
 			});
 			logger.error(
 				`${req.method} error: Failed getting conversation after creating it at ${req.originalUrl}. (${req.ip})`

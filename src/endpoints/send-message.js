@@ -39,6 +39,16 @@ router.post('/', async function (req, res) {
 		return;
 	}
 
+	if (body.content.length > 2000) {
+		res.status(400);
+		res.json({
+			error: 400,
+			message: 'CONTENT TOO LONG',
+		});
+		logger.warning(`${req.method} fail: Content field was too long at ${req.originalUrl}. (${req.ip})`);
+		return;
+	}
+
 	if (! await conversations.doesEmployeeHaveAccess(employee.id, body.conversationId)) {
 		res.status(404);
 		res.json({
@@ -66,7 +76,7 @@ router.post('/', async function (req, res) {
 		res.status(500);
 		res.json({
 			error: 500,
-			message: 'INTERNAL DATABASE ERROR',
+			message: 'INTERNAL ALMS ERROR',
 		});
 		logger.error(
 			`${req.method} error: Error adding new message to database at ${req.originalUrl}. (${req.ip})\n${e}`
