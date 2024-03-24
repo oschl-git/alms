@@ -96,7 +96,8 @@ async function getConversationBetweenTwoEmployees(username1, username2) {
 		'join conversation_participants cp2 on c.id = cp2.id_conversation ' +
 		'join employees e1 on cp1.id_employee = e1.id ' +
 		'join employees e2 on cp2.id_employee = e2.id ' +
-		'where e1.username = ? ' +
+		'and c.is_group = 0 ' +
+		'and e1.username = ? ' +
 		'and e2.username = ?;',
 		username1, username2
 	);

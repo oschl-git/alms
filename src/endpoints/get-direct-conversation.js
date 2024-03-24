@@ -34,10 +34,13 @@ router.get('/:employeeUsername', async function (req, res) {
 	);
 
 	if (conversation === null) {
-		const conversationId = await conversations.createNewConversationWithEmployees(
+		await conversations.createNewConversationWithEmployees(
 			null, [employee.username, req.params.employeeUsername]
 		);
-		conversation = await conversations.getConversationById(conversationId);
+
+		conversation = await conversations.getConversationBetweenTwoEmployees(
+			employee.username, req.params.employeeUsername
+		);
 
 		if (conversation === null) {
 			res.status(500);
@@ -54,9 +57,7 @@ router.get('/:employeeUsername', async function (req, res) {
 
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
-	res.json({
-		conversation: conversation,
-	});
+	res.json(conversation);
 });
 
 module.exports = router; 
