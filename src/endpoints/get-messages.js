@@ -25,7 +25,7 @@ router.get('/:conversationId', async function (req, res) {
 			message: 'CONVERSATION NOT FOUND',
 		});
 		logger.warning(
-			`${req.method} fail: Client attempted getting messages ` +
+			`${req.method} fail: Client attempted getting messages for ` +
 			`an invalid conversation at ${req.originalUrl}. (${req.ip})`
 		);
 		return;

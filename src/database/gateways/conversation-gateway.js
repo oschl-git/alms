@@ -112,7 +112,7 @@ async function getConversationBetweenTwoEmployees(username1, username2) {
 
 async function doesEmployeeHaveAccess(employeeId, conversationId) {
 	result = await query(
-		'select (id) from conversation_participants where id_conversation=? & id_employee=?;',
+		'select (id) from conversation_participants where id_conversation=? and id_employee=?;',
 		conversationId, employeeId
 	);
 	return result.length > 0;

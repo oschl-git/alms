@@ -13,10 +13,10 @@ async function addNewMessage(employeeId, conversationId, content) {
 
 async function getMessagesFromConversation(conversationId, limit = 100) {
 	const result = await query(
-		'select m.id, e.username, e.name, e.surname, m.content, m.datetime_sent from messages m ' +
+		'select m.id, e.id as id_employee, e.username, e.name, e.surname, m.content, m.datetime_sent from messages m ' +
 		'left join employees e on m.id_employee = e.id ' +
 		'where id_conversation = ? ' +
-		'order by datetime_sent desc ' +
+		'order by datetime_sent asc ' +
 		'limit ?;',
 		conversationId, limit);
 	if (result.length <= 0) return [];
@@ -30,7 +30,7 @@ async function getMessagesFromConversation(conversationId, limit = 100) {
 
 async function getUnreadMessagesFromConversation(conversationId, userId, limit = 100) {
 	const result = await query(
-		'select m.id, e.username, e.name, e.surname, m.content, m.datetime_sent from messages m ' +
+		'select m.id, e.id as id_employee, e.username, e.name, e.surname, m.content, m.datetime_sent from messages m ' +
 		'left join employees e on m.id_employee = e.id ' +
 		'left join read_messages rm on m.id = rm.id_message ' +
 		'and rm.id_employee = ? ' +
@@ -75,6 +75,7 @@ async function markMessagesAsRead(employeeId, messages) {
 function mapResponseToObject(response) {
 	return {
 		id: response.id,
+		employeeId: response.id_employee,
 		username: response.username,
 		name: response.name,
 		surname: response.surname,
