@@ -104,14 +104,14 @@ function checkFieldsForErrors(body) {
 	if (String(body.name).length < 2) {
 		errors.push('Name must be longer than 2 characters.');
 	}
-	if (String(body.name).length > 255) {
-		errors.push('Name must be shorter than 255 characters.');
+	if (String(body.name).length > 32) {
+		errors.push('Name must be shorter than 32 characters.');
 	}
 	if (String(body.surname).length < 2) {
 		errors.push('Surname must be longer than 2 characters.');
 	}
-	if (String(body.surname).length > 255) {
-		errors.push('Surname must be shorter than 255 characters.');
+	if (String(body.surname).length > 32) {
+		errors.push('Surname must be shorter than 32 characters.');
 	}
 
 	errors = errors.concat(checkPasswordRequirements(body.password));
