@@ -31,7 +31,7 @@ router.get('/:id', async function (req, res) {
 
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
-	res.json(await conversations.getConversationById(id));
+	res.json(await conversations.getConversationWithParticipantsById(id));
 });
 
 module.exports = router; 

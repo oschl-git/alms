@@ -16,7 +16,7 @@ async function getMessagesFromConversation(conversationId, limit = 100) {
 		'select m.id, e.id as id_employee, e.username, e.name, e.surname, m.content, m.datetime_sent from messages m ' +
 		'left join employees e on m.id_employee = e.id ' +
 		'where id_conversation = ? ' +
-		'order by datetime_sent asc ' +
+		'order by datetime_sent desc ' +
 		'limit ?;',
 		conversationId, limit);
 	if (result.length <= 0) return [];

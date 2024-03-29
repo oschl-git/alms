@@ -56,6 +56,12 @@ async function getConversationById(id) {
 	return mapResponseToObject(conversation);
 }
 
+async function getConversationWithParticipantsById(id) {
+	const conversation = await getConversationById(id);
+	conversation.participants = await getParticipantsForConversation(id);
+	return conversation;
+}
+
 async function getAllConversationsForEmployee(employeeId, onlyGroup = null) {
 	let sql = (
 		'select conversations.id, name, is_group, datetime_created, datetime_updated ' +
@@ -149,6 +155,7 @@ module.exports = {
 	createNewConversation,
 	addNewConversationEmployeeRelation,
 	getConversationById,
+	getConversationWithParticipantsById,
 	getAllConversationsForEmployee,
 	getAllConversationsWithParticipantsForEmployee,
 	getConversationBetweenTwoEmployees,
