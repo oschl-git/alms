@@ -39,7 +39,7 @@ router.post('/', async function (req, res) {
 		return;
 	}
 
-	if (body.content.length > 2000) {
+	if (body.content.length > 500) {
 		res.status(400);
 		res.json({
 			error: 400,

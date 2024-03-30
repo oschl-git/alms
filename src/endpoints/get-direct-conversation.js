@@ -17,9 +17,9 @@ router.get('/:employeeUsername', async function (req, res) {
 	};
 
 	if (! await employees.isUsernameTaken(req.params.employeeUsername)) {
-		res.status(400);
+		res.status(404);
 		res.json({
-			error: 400,
+			error: 404,
 			message: 'EMPLOYEE DOES NOT EXIST',
 		});
 		logger.warning(

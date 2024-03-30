@@ -72,6 +72,20 @@ END;;
 
 DELIMITER ;
 
+DROP TABLE IF EXISTS `read_messages`;
+CREATE TABLE `read_messages` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_employee` int NOT NULL,
+  `id_message` int NOT NULL,
+  `datetime_read` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_employee_message_id` (`id_employee`,`id_message`),
+  KEY `id_message` (`id_message`),
+  CONSTRAINT `read_messages_ibfk_1` FOREIGN KEY (`id_employee`) REFERENCES `employees` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `read_messages_ibfk_2` FOREIGN KEY (`id_message`) REFERENCES `messages` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
 DROP TABLE IF EXISTS `session_tokens`;
 CREATE TABLE `session_tokens` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -86,4 +100,4 @@ CREATE TABLE `session_tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- 2024-03-15 08:11:26
+-- 2024-03-30 13:02:03
