@@ -87,10 +87,10 @@ async function main() {
 			cert: fs.readFileSync(cert),
 		}, app);
 
-		server.listen(443, () => {
+		server.listen(port, () => {
 			logger.success(
-				`The Aperture Laboratories Messaging Service is now running on HTTPS at port 443 and available to all` +
-				`qualified Aperture Science personnel.`
+				`The Aperture Laboratories Messaging Service is now running on HTTPS at port ${port} and available ` +
+				`to all qualified Aperture Science personnel.`
 			);
 		});
 	}
