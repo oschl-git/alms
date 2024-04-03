@@ -73,7 +73,7 @@ async function main() {
 	});
 
 	// start Express application
-	if (process.env.USE_HTTPS) {
+	if (process.env.USE_HTTPS === 'true') {
 		const key = process.env.HTTPS_KEY;
 		const cert = process.env.HTTPS_CERT;
 
