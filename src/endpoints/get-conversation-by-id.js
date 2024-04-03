@@ -18,9 +18,9 @@ router.get('/:id', async function (req, res) {
 	const id = req.params.id;
 
 	if (! await conversations.doesEmployeeHaveAccess(employee.id, id)) {
-		res.status(400);
+		res.status(404);
 		res.json({
-			error: 400,
+			error: 404,
 			message: 'CONVERSATION NOT FOUND',
 		});
 		logger.warning(

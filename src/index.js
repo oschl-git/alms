@@ -1,12 +1,14 @@
 const { badJsonErrorHandler } = require('./error_handling/bad-json');
 const { rateLimit } = require('express-rate-limit');
+const { tooManyRequestsResponse } = require('./error_handling/too-many-requests');
 const bodyParser = require('body-parser');
 const connection = require('./database/connection');
 const dotenv = require('dotenv');
 const express = require('express');
+const fs = require('fs');
+const https = require('https');
 const loader = require('require-dir');
 const logger = require('./logging/logger');
-const { tooManyRequestsResponse } = require('./error_handling/too-many-requests');
 
 async function main() {
 	logger.success('Startup initiated.');
@@ -71,12 +73,35 @@ async function main() {
 	});
 
 	// start Express application
-	app.listen(port, () => {
-		logger.success(
-			`The Aperture Laboratories Messaging Service is now running at port ${port} and available to all ` +
-			`qualified Aperture Science personnel.`
-		);
-	});
+	if (process.env.USE_HTTPS) {
+		const key = process.env.HTTPS_KEY;
+		const cert = process.env.HTTPS_CERT;
+
+		if (key == null || cert == null) {
+			logger.error('Attempted to use HTTPS but no key or certificate was specified.');
+			return;
+		}
+
+		const server = https.createServer({
+			key: fs.readFileSync(key),
+			cert: fs.readFileSync(cert),
+		}, app);
+
+		server.listen(443, () => {
+			logger.success(
+				`The Aperture Laboratories Messaging Service is now running on HTTPS at port 443 and available to all` +
+				`qualified Aperture Science personnel.`
+			);
+		});
+	}
+	else {
+		app.listen(port, () => {
+			logger.success(
+				`The Aperture Laboratories Messaging Service is now running on HTTP at port ${port} and available to` +
+				`all qualified Aperture Science personnel.`
+			);
+		});
+	}
 }
 
-main();
+main();;
