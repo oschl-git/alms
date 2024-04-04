@@ -39,8 +39,29 @@ router.post('/', async function (req, res) {
 		return;
 	}
 
+	if (body.name.length > 16) {
+		res.status(400);
+		res.json({
+			error: 400,
+			message: 'NAME TOO LONG',
+		});
+		logger.warning(`${req.method} fail: Conversation name was too long at ${req.originalUrl}. (${req.ip})`);
+		return;
+	}
+
 	// Add current user to the conversation
 	const employees = body.employees.concat([employee.username]);
+
+	if (employees.length > 10) {
+		res.status(400);
+		res.json({
+			error: 400,
+			message: 'TOO MANY PARTICIPANTS',
+		});
+		logger.warning(`${req.method} fail: Too many participants provided at ${req.originalUrl}. (${req.ip})`);
+		return;
+	}
+
 	// Remove duplicates
 	const filteredEmployees = [...new Set(employees)];
 
