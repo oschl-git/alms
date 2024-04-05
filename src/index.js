@@ -62,6 +62,13 @@ async function main() {
 		app.use('/' + path, endpoints[endpoint]);
 	}
 
+	// Favicon endpoint
+	app.get('/favicon.ico', function (req, res) {
+		logger.success(`${req.method} OK: Client requested favicon: ${req.originalUrl}. (${req.ip})`);
+		res.status(200);
+		res.sendFile(__dirname + '/img/favicon.png');
+	});
+
 	// 404 error endpoint
 	app.all('*', function (req, res) {
 		logger.warning(`${req.method} error: Client requested an invalid endpoint: ${req.originalUrl}. (${req.ip})`);
