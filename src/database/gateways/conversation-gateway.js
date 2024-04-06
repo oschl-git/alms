@@ -127,7 +127,7 @@ async function doesEmployeeHaveAccess(employeeId, conversationId) {
 async function getParticipantsForConversation(conversationId) {
 	const participants = await employees.getEmployeesInConversation(conversationId);
 
-	var output = [];
+	let output = [];
 	for (const participant of participants) {
 		output.push({
 			id: participant.id,

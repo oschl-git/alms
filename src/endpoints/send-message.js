@@ -4,6 +4,7 @@
 
 const authenticator = require('../security/authenticator');
 const conversations = require('../database/gateways/conversation-gateway');
+const encryptor = require('../security/message-encryptor');
 const express = require('express');
 const jsonValidation = require('../error_handling/json-validation');
 const logger = require('../logging/logger');
@@ -62,8 +63,10 @@ router.post('/', async function (req, res) {
 		return;
 	}
 
+	let encryptedContent = encryptor.encrypt(body.content);
+
 	try {
-		await messages.addNewMessage(employee.id, body.conversationId, body.content);
+		await messages.addNewMessage(employee.id, body.conversationId, encryptedContent);
 
 		logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 		res.status(200);

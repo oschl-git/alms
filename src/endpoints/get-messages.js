@@ -4,6 +4,7 @@
 
 const authenticator = require('../security/authenticator');
 const conversations = require('../database/gateways/conversation-gateway');
+const encryptor = require('../security/message-encryptor');
 const express = require('express');
 const logger = require('../logging/logger');
 const messages = require('../database/gateways/message-gateway');
@@ -32,12 +33,13 @@ router.get('/:conversationId', async function (req, res) {
 	}
 
 	const retrievedMessages = await messages.getMessagesFromConversation(params.conversationId);
+	const decryptedMessages = encryptor.decryptMessageObjectArray(retrievedMessages);
 
-	await messages.markMessagesAsRead(employee.id, retrievedMessages);
+	await messages.markMessagesAsRead(employee.id, decryptedMessages);
 
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
-	res.json(retrievedMessages);
+	res.json(decryptedMessages);
 });
 
 module.exports = router; 

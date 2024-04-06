@@ -36,7 +36,7 @@ async function main() {
 
 	// configure Express application
 	const app = express();
-	const port = process.env.PORT || 3000;
+	const port = process.env.PORT || 5678;
 
 	// set up JSON parsing
 	app.use(bodyParser.json({
@@ -110,4 +110,4 @@ async function main() {
 	}
 }
 
-main();;
+main();

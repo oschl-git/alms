@@ -4,6 +4,7 @@
 
 const crypto = require('crypto');
 const dotenv = require('dotenv');
+const logger = require('../logging/logger');
 
 dotenv.config();
 const secretKey = process.env.ENCRYPTION_KEY;
@@ -28,21 +29,57 @@ function encrypt(text) {
 /**
  * 
  * @param {string} text - The text to decrypt
- * @returns {string} the decrypted message
+ * @returns {string} the decrypted message if decryption was successful, the original text if not
  */
 function decrypt(text) {
-	let iv = Buffer.from(text.substring(0, 24), 'base64');
-	let message = text.substring(24);
+	try {
+		let iv = Buffer.from(text.substring(0, 24), 'base64');
+		let message = text.substring(24);
 
-	const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(secretKey), iv);
+		const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(secretKey), iv);
 
-	let decrypted = decipher.update(message, 'hex', 'utf-8');
-	decrypted += decipher.final('utf-8');
+		let decrypted = decipher.update(message, 'hex', 'utf-8');
+		decrypted += decipher.final('utf-8');
 
-	return decrypted;
+		return decrypted;
+	} catch (e) {
+		logger.error(
+			'Failed decrypting a message. It appears that there is an incorrectly stored (possibly unencrypted) ' +
+			'message in the database.'
+		);
+
+		return text;
+	}
 }
+
+/**
+ * 
+ * @param {object} message - The message object to decrypt
+ * @returns {object} message content with decrypted content
+ */
+function decryptMessageObject(message) {
+	let decryptedMessage = { ...message };
+	decryptedMessage.content = decrypt(message.content);
+	return decryptedMessage;
+}
+
+/**
+ * 
+ * @param {object[]} array - The array of objects to decrypt 
+ * @returns {object[]} an array of messages with their content decrypted
+ */
+function decryptMessageObjectArray(array) {
+	let outputArray = [];
+	for (const message of array) {
+		outputArray.push(decryptMessageObject(message));
+	}
+	return outputArray;
+}
+
 
 module.exports = {
 	encrypt,
 	decrypt,
+	decryptMessageObject,
+	decryptMessageObjectArray,
 };
