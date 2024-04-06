@@ -37,7 +37,6 @@ async function main() {
 	// configure Express application
 	const app = express();
 	const port = process.env.PORT || 3000;
-	// app.set('trust proxy', true);
 
 	// set up JSON parsing
 	app.use(bodyParser.json({
@@ -62,7 +61,7 @@ async function main() {
 		app.use('/' + path, endpoints[endpoint]);
 	}
 
-	// Favicon endpoint
+	// favicon endpoint
 	app.get('/favicon.ico', function (req, res) {
 		logger.success(`${req.method} OK: Client requested favicon: ${req.originalUrl}. (${req.ip})`);
 		res.status(200);
