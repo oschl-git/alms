@@ -8,6 +8,59 @@ This document attempts to be an exhaustive overview of all ALMS functionality an
 - made as a final school project for the subject PV at **SPŠE Ječná**
 - licensed under the **[GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)**
 
+## Used tools and requirements
+ALMS is built using JavaScript with **NodeJS**, and utilizes a **MySQL** database for storing user data.
+### Requirements:
+- **NodeJS v20.10.0** or compatible
+- **MySQL 8.0.36** or compatible
+#### NPM packages:
+- **dotenv** ^16.4.4
+- **express** ^4.18.2
+- **express-rate-limit** ^7.1.5
+- **https** ^1.0.0
+- **mysql2** ^3.9.1
+- **require-dir** ^1.2.0
+
+### Used tools:
+- NodeJS
+- NPM
+- MySQL
+- VSCode
+- Adminer
+- GIMP
+- SoapUI
+
+## Hosting an ALMS instance
+### Steps for running ALMS:
+Ensure that you have a compatible NodeJS and NPM version installed and that a compatible MySQL database is running.
+
+1) Clone this Git repository.
+2) Run `npm install` in the project folder to install package dependencies.
+3) Use one of the provided SQL scripts to create a MySQL database. You can find them in the [mysql folder](../mysql). One of them creates a database called `ALMS` for you, the other only creates tables and triggers, so you can create your database manually according to your needs.
+4) In the project folder, create a `.env` file and fill it with your configuration. To learn how to configure ALMS, check out the [configuration section](#configuration). Make sure to correctly supply the login details for the database you just created.
+5) Run `node .` or `npm run start` in the project folder to start ALMS.
+
+### Running ALMS as a systemd service
+On systems using the `systemd` init system (most Linux distributions), it's a good idea to run ALMS as a systemd service. To do this, create a new `.service` file in the `/lib/systemd/system` directory, for example `/lib/systemd/system/alms.service`. Then fill it with the required content, for example:
+
+```
+[Unit]
+Description=Aperture Laboratories Messaging Service
+After=network.target
+
+[Service]
+Type=simple
+User=user
+After=mysql.service
+EnvironmentFile=/path/to/alms/directory/.env
+ExecStart=/usr/bin/node /path/to/alms/directory
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+Modify this file to suit your needs, and then start the service with `sudo systemctl start alms` and enable the service with `sudo systemctl enable alms` to always start it on system boot.
+
 ## Configuration
 ALMS requires a `.env` file to be created in the project directory (not in `src`, but in the root project directory). It should contain the following values:
 ```

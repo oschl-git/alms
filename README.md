@@ -42,7 +42,7 @@ Before starting, make sure to have **NodeJS v20.10.0** and **MySQL 8.0.36** or c
 1) Clone this Git repository.
 2) Run `npm install` in the project folder to install package dependencies.
 3) Use one of the provided SQL scripts to create a MySQL database. You can find them in the [mysql folder](./mysql). One of them creates a database called `ALMS` for you, the other only creates tables and triggers, so you can create your database manually according to your needs.
-4) In the project folder, create a `.env` file and fill it with your configuration. To learn how to configure ALMS, check out the [configuration section in the documentation](). Make sure to correctly supply the login details to the database you just created.
+4) In the project folder, create a `.env` file and fill it with your configuration. To learn how to configure ALMS, check out the [configuration section in the documentation](./docs/DOCUMENTATION.md#configuration). Make sure to correctly supply the login details to the database you just created.
 5) Run `node .` or `npm run start` in the project folder to start ALMS.
 
 If you're hosting a permanent instance on a server with the **systemd** init system (most Linux distributions), it's a good idea to setup ALMS as a [systemd service](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html).
