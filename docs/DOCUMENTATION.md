@@ -116,7 +116,7 @@ ASAP is used for HTTP/HTTPS request authorization. It works in the following ste
 
 1) The client attempts to log in with a username and password, sending a POST request to the `/login` endpoint.
 2) If the supplied details match, ALMS generates a new 128-byte session token and associates it with the provided employee. The token, along with additional user details, are sent in response.
-3) The client stores the session token and sends it as header titled `Token` with each request. Every request containing the token refreshes its expiry time.
+3) The client stores the session token and sends it as header titled `token` with each request. Every request containing the token refreshes its expiry time.
 4) If no requests are sent for a time specified in the `.env` file (`TOKEN_VALID_FOR_MIN` option, 10 minutes by default), the token expires and can no longer be used for authorization. The user must log in again.
 
 ### Password hashing
