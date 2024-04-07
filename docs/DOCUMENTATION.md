@@ -59,7 +59,7 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 ```
-Modify this file to suit your needs, and then start the service with `sudo systemctl start alms` and enable the service with `sudo systemctl enable alms` to always start it on system boot.
+Modify this file to suit your needs, reload systemd with `sudo systemctl daemon-reload`, and then start the service with `sudo systemctl start alms` and enable the service with `sudo systemctl enable alms` to always start it on system boot.
 
 ## Configuration
 ALMS requires a `.env` file to be created in the project directory (not in `src`, but in the root project directory). It should contain the following values:
