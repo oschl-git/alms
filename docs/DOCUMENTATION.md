@@ -1,4 +1,4 @@
-# ALMS documentation
+# ALMS DOCUMENTATION
 This document attempts to be an exhaustive overview of all ALMS functionality and an extensive guide for taking advantage of its capabilities.
 
 **Endpoint documentation is not part of this document. To learn about ALMS endpoints specifically, check out the [endpoints documentation](ENDPOINTS.md).**
