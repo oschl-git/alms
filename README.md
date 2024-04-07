@@ -10,7 +10,7 @@ For an example of a client, check out [**Aperture Messenger**](https://github.co
 
 ## Features
 - sending direct messages ✉️
-- creating and messaging in group conversations 📪
+- creating and communicating in group conversations 📪
 - creating new user accounts 👩‍🦰
 - password hashing 🔒
 - message encryption 🔒
@@ -40,4 +40,10 @@ Before starting, make sure to have **NodeJS v20.10.0** and **MySQL 8.0.36** or c
 4) In the project folder, create a `.env` file and fill it with your configuration. To learn how to configure ALMS, check out the [configuration section in the documentation](). Make sure to correctly supply the login details to the database you just created.
 5) Run `node .` or `npm run start` in the project folder to start ALMS.
 
-If you're hosting a permanent instance on a server with the systemd init system, it's a good idea to setup ALMS as a [systemd service](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html).
+If you're hosting a permanent instance on a server with the **systemd** init system (most Linux distributions), it's a good idea to setup ALMS as a [systemd service](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html).
+
+## Project information
+ALMS, as well as Aperture Messenger, are my final projects for the subject PV at the Secondary Technical School of Electrical Engineering Ječná in Prague.
+
+## License
+ALMS is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
