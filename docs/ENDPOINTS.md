@@ -60,6 +60,8 @@ Endpoints that do not return anything will return a generic success response of 
 - **500**
    - *INTERNAL ALMS ERROR*
 
+---
+
 ### POST `/register`
 - the register endpoint allowing creation of new users
 #### Required headers:
@@ -85,3 +87,6 @@ Endpoints that do not return anything will return a generic success response of 
    - *USERNAME TAKEN*
 - **500**
    - *INTERNAL ALMS ERROR*
+
+---
+
