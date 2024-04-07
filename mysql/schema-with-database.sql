@@ -1,4 +1,4 @@
--- MySQL 8.0.36 dump
+-- MySQL 8.0.36
 
 SET NAMES utf8;
 SET time_zone = '+00:00';
