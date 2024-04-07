@@ -140,13 +140,40 @@ async function getParticipantsForConversation(conversationId) {
 	return output;
 }
 
+async function getConversationsWithUnreadMessageCount(employeeId) {
+	const result = await query(
+		'select c.*, count(distinct m.id) as unread_messages ' +
+		'from conversations c ' +
+		'join conversation_participants cp on c.id = cp.id_conversation ' +
+		'join employees e on cp.id_employee = e.id ' +
+		'join messages m on c.id = m.id_conversation ' +
+		'left join read_messages rm on m.id = rm.id_message and rm.id_employee = e.id ' +
+		'where e.id = ? and rm.id_message is null ' +
+		'group by c.id ' +
+		'order by c.datetime_updated desc;',
+		employeeId
+	);
+
+	let conversations = [];
+	for (const conversation of result) {
+		conversations.push(mapResponseToObject(conversation));
+	}
+
+	for (let conversation of conversations) {
+		conversation.participants = await getParticipantsForConversation(conversation.id);
+	}
+
+	return conversations;
+}
+
 function mapResponseToObject(response) {
 	return {
 		id: response.id,
 		name: response.name,
 		isGroup: response.is_group,
 		datetimeCreated: response.datetime_created,
-		datetimeUpdated: response.datetime_updated
+		datetimeUpdated: response.datetime_updated,
+		unreadMessages: response.unread_messages,
 	};
 }
 
@@ -160,4 +187,5 @@ module.exports = {
 	getAllConversationsWithParticipantsForEmployee,
 	getConversationBetweenTwoEmployees,
 	doesEmployeeHaveAccess,
+	getConversationsWithUnreadMessageCount,
 };
