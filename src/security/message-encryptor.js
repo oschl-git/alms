@@ -15,7 +15,6 @@ const secretKey = process.env.ENCRYPTION_KEY;
  * @returns {string} the encrypted text with initialization vector
  */
 function encrypt(text) {
-	console.log(secretKey);
 	const iv = crypto.randomBytes(16);
 
 	const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(secretKey), iv);
