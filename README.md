@@ -6,7 +6,7 @@
 
 The **Aperture Laboratories Messaging Service (ALMS)** is a backend NodeJS REST API server for handling internal communication in Aperture Science, a fictional research facility from Valve's shared Portal and Half-Life universe.
 
-For an example of a client, check out [**Aperture Messenger**](https://github.com/oschl-git/aperture-messenger). Aperture Messenger is a CLI client, but you're welcome to write your own, as ALMS endpoints are well documented and everything is open-source. If you're interested in doing so, check out [the documentation]().
+For an example of a client, check out [**Aperture Messenger**](https://github.com/oschl-git/aperture-messenger). Aperture Messenger is a CLI client, but you're welcome to write your own, as ALMS endpoints are well documented and everything is open-source. If you're interested in doing so, check out the [documentation](./docs/DOCUMENTATION.md).
 
 ## Features
 - sending direct messages ✉️
@@ -15,9 +15,14 @@ For an example of a client, check out [**Aperture Messenger**](https://github.co
 - password hashing 🔒
 - message encryption 🔒
 - HTTPS 🔒
+- request logging 🖊️
 - rate limiting ⏱
 
 More features, such as group administrator functionality,  might be added in the future.
+
+## Detailed documentation
+- to get detailed information about ALMS and its functionality, refer to the [documentation](./docs/DOCUMENTATION.md).
+- to learn about ALMS endpoints and how to use them, refer to the [endpoints documentation](./docs/ENDPOINTS.md).
 
 ## Requirements
 - **NodeJS v20.10.0** or compatible

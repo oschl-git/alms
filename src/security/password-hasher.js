@@ -5,7 +5,7 @@
 const crypto = require('crypto');
 
 /**
- * 
+ * Hashes a password and returns the hash combined with salt.
  * @param {string} password - The password to hash 
  * @returns {string} the hashed password
  */
@@ -17,7 +17,7 @@ function hashPassword(password) {
 }
 
 /**
- * 
+ * Checks whether a plaintext and hashed passwords match.
  * @param {string} password - The password submitted by user, plain text 
  * @param {string} storedPassword - Stored hashed password
  * @returns {boolean} whether passwords match
