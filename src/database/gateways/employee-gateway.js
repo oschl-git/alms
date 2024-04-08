@@ -4,6 +4,17 @@
 
 const { query, queryInsertReturnInsertedId, beginTransaction, commit, rollback } = require('../connection');
 
+async function getAllEmployees() {
+	const result = await query('select id, username, name, surname from employees;');
+	if (result.length <= 0) return [];
+
+	let employees = [];
+	for (const employee of result) {
+		employees.push(mapResponseToLimitedObject(employee));
+	}
+	return employees;
+}
+
 async function addNewEmployee(username, name, surname, password, ip) {
 	return await queryInsertReturnInsertedId(
 		'insert into employees (username, name, surname, password, ip) ' +
@@ -77,7 +88,17 @@ function mapResponseToObject(response) {
 	};
 }
 
+function mapResponseToLimitedObject(response) {
+	return {
+		id: response.id,
+		username: response.username,
+		name: response.name,
+		surname: response.surname,
+	};
+}
+
 module.exports = {
+	getAllEmployees,
 	addNewEmployee,
 	isUsernameTaken,
 	getEmployeeObjectByUsername,

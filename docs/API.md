@@ -166,6 +166,30 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 
 ---
 
+## GET `/get-all-employees`
+- returns an array of all employees as objects
+
+#### Required headers:
+- none
+
+#### 200 OK response:
+```
+[
+  {
+    "id": <employee id>,
+    "username": "<employee username>",
+    "name": "<employee name>",
+    "surname": "<employee surname>"
+  },
+  ...
+]
+```
+
+#### ERROR responses:
+- none
+
+---
+
 ### GET `/is-username-taken/<username>`
 - returns a true/false response based on if the provided username is already taken
 
