@@ -15,6 +15,23 @@ async function getAllEmployees() {
 	return employees;
 }
 
+async function getActiveEmployees() {
+	const result = await query(
+		'select employees.id, employees.username, employees.name, employees.surname ' +
+		'from session_tokens ' +
+		'left join employees on session_tokens.id_employee = employees.id ' +
+		'where datetime_expires>?;',
+		new Date()
+	);
+	if (result.length <= 0) return [];
+
+	let employees = [];
+	for (const employee of result) {
+		employees.push(mapResponseToLimitedObject(employee));
+	}
+	return employees;
+}
+
 async function addNewEmployee(username, name, surname, password, ip) {
 	return await queryInsertReturnInsertedId(
 		'insert into employees (username, name, surname, password, ip) ' +
@@ -99,6 +116,7 @@ function mapResponseToLimitedObject(response) {
 
 module.exports = {
 	getAllEmployees,
+	getActiveEmployees,
 	addNewEmployee,
 	isUsernameTaken,
 	getEmployeeObjectByUsername,
