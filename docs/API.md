@@ -488,6 +488,45 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 
 ---
 
+### POST `/add-employee-to-group`
+- adds an employee to an already existing group conversation
+
+#### Required headers:
+- [authentication header](#authentication-header)
+
+#### JSON request content:
+```
+{
+   "conversationId": <conversation id>,
+   "username": "<username of the employee to add>"
+}
+```
+
+#### JSON field requirements
+- conversationId
+   - int
+   - must be a group conversation
+- username
+   - string
+
+#### 200 OK response:
+- [default success response](#success-response)
+
+#### ERROR responses:
+- **401**
+   - [authentication error responses](#authentication-error-responses)
+- **400**
+   - *JSON FIELDS MISSING*
+   - *USERNAME MUST BE STRING*
+   - *CONVERSATION NOT GROUP*
+- **404**
+   - *CONVERSATION NOT FOUND*
+   - *EMPLOYEE NOT FOUND*
+- **500**
+   - *INTERNAL ALMS ERROR*
+
+---
+
 ### POST `/send-message`
 - sends message to a conversation
 

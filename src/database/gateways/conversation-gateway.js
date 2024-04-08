@@ -166,6 +166,11 @@ async function getConversationsWithUnreadMessageCount(employeeId) {
 	return conversations;
 }
 
+async function isConversationGroup(conversationId) {
+	result = await query('select * from conversations where id=?;', conversationId);
+	return Boolean(result[0].is_group);
+}
+
 function mapResponseToObject(response) {
 	return {
 		id: response.id,
@@ -188,4 +193,5 @@ module.exports = {
 	getConversationBetweenTwoEmployees,
 	doesEmployeeHaveAccess,
 	getConversationsWithUnreadMessageCount,
+	isConversationGroup,
 };

@@ -103,7 +103,7 @@ async function main() {
 	else {
 		app.listen(port, () => {
 			logger.success(
-				`The Aperture Laboratories Messaging Service is now running on HTTP at port ${port} and available to` +
+				`The Aperture Laboratories Messaging Service is now running on HTTP at port ${port} and available to ` +
 				`all qualified Aperture Science personnel.`
 			);
 		});
