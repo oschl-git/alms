@@ -17,7 +17,7 @@ async function getAllEmployees() {
 
 async function getActiveEmployees() {
 	const result = await query(
-		'select employees.id, employees.username, employees.name, employees.surname ' +
+		'select employees.id, employees.username, employees.name, employees.surname, employees.color ' +
 		'from session_tokens ' +
 		'left join employees on session_tokens.id_employee = employees.id ' +
 		'where datetime_expires>?;',
@@ -54,8 +54,7 @@ async function getEmployeeObjectByUsername(username) {
 
 async function getEmployeeObjectBySessionToken(token) {
 	const result = await query(
-		'select employees.id, employees.username, employees.name, ' +
-		'employees.surname, employees.password, employees.ip ' +
+		'select employees.* ' +
 		'from employees ' +
 		'right join session_tokens on session_tokens.id_employee = employees.id ' +
 		'where token=?;',
@@ -79,8 +78,7 @@ async function getRegisteredUserCount() {
 
 async function getEmployeesInConversation(conversationId) {
 	const result = await query(
-		'select employees.id, employees.username, employees.name, ' +
-		'employees.surname, employees.password, employees.ip ' +
+		'select employees.* ' +
 		'from conversation_participants ' +
 		'left join employees on conversation_participants.id_employee = employees.id ' +
 		'where id_conversation = ?;',
@@ -106,6 +104,7 @@ function mapResponseToObject(response) {
 		surname: response.surname,
 		password: response.password,
 		ip: response.ip,
+		color: response.color,
 	};
 }
 
@@ -115,6 +114,7 @@ function mapResponseToLimitedObject(response) {
 		username: response.username,
 		name: response.name,
 		surname: response.surname,
+		color: response.color,
 	};
 }
 
