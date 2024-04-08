@@ -1,7 +1,7 @@
 # ALMS DOCUMENTATION
-This document attempts to be an exhaustive overview of all ALMS functionality and an extensive guide for taking advantage of its capabilities.
+This document attempts to be an exhaustive overview of internal ALMS functionality and an extensive guide for taking advantage of its capabilities.
 
-**Endpoint documentation is not part of this document. To learn about ALMS endpoints specifically, check out the [endpoints documentation](ENDPOINTS.md).**
+**API and endpoint documentation is not part of this document. To learn about ALMS API functionality and endpoints specifically, check out the [API & endpoint documentation](API.md).**
 
 - author: **Ondřej Schlaichert**
 - created in: **2024**
