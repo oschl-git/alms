@@ -6,10 +6,12 @@ This document attempts to be an exhaustive guide to using ALMS API and its endpo
 # General API information
 
 ## Public ALMS instance
-The public "official" ALMS instance is hosted on https://alms.oschl.eu/ / `91.132.145.39`. Assuming everything goes to plan, I would like to keep it available for at least a few more months.
+The public "official" ALMS instance is hosted on https://alms.oschl.eu/ / `91.132.145.39`. The built releases of [Aperture Messenger](https://github.com/oschl-git/aperture-messenger) attempt to connect to this instance.
+
+Assuming everything goes to plan, I would like to keep it available for at least a few more months (I'm writing this on the 8th of April 2024).
 
 ## Authentication header
-**Aperture Secure Authentication Protocol (ASAP)** is used for request authorization. For a detailed view of how it works, check out the [relevant section of the documentation](DOCUMENTATION.md#aperture-secure-authentication-protocol-asap). What is important here is that every request that requires authorization needs to have a header titled `token` that will include the current user's session token.
+**Aperture Secure Authentication Protocol (ASAP)** is used for request authorization. For a detailed view of how it works, check out the [relevant section of the documentation](DOCUMENTATION.md#aperture-secure-authentication-protocol-asap). What is important here is that every request that requires authorization needs to have a header titled `token` that will include the current user's session token, which can be obtained with the [`POST /login`](#post-login) request. 
 
 ## Error response
 All error responses include the same JSON content. It is of the following format:

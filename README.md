@@ -18,7 +18,7 @@ For an example of a client, check out [**Aperture Messenger**](https://github.co
 - request logging 🖊️
 - rate limiting ⏱
 
-More features, such as group administrator functionality,  might be added in the future.
+More features, such as group administrator functionality, might be added in the future.
 
 ## Detailed documentation
 - to get detailed information about ALMS and its functionality, refer to the [documentation](./docs/DOCUMENTATION.md).
@@ -48,7 +48,7 @@ Before starting, make sure to have **NodeJS v20.10.0** and **MySQL 8.0.36** or c
 If you're hosting a permanent instance on a server with the **systemd** init system (most Linux distributions), it's a good idea to setup ALMS as a [systemd service](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html).
 
 ## Project information
-ALMS, as well as Aperture Messenger, are my final projects for the subject PV at the Secondary Technical School of Electrical Engineering Ječná in Prague.
+ALMS, as well as Aperture Messenger, are my final projects for the subject PV at the **Secondary Technical School of Electrical Engineering Ječná** in Prague.
 
 ## License
 ALMS is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).

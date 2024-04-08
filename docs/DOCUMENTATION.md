@@ -126,7 +126,7 @@ Passwords are hashed using the [scrypt](https://en.wikipedia.org/wiki/Scrypt) al
 Messages are encrypted using the [AES-256](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) algorithm. For details on the implementation, examine the code in [`message-encryptor.js`](../src/security/message-encryptor.js).
 
 ### HTTPS
-ALMS should be hosted and connected to **exclusively** using the secure HTTPS protocol to mitigate password and session token theft; HTTP should only be used for local testing. HTTPS servers should be hosted on port 443. Configuring HTTPS certificates and keys can be done in the `.env` file, as specified in the configuration section above.
+ALMS should be hosted and connected to **exclusively** using the secure HTTPS protocol to mitigate password and session token theft; HTTP should only be used for local testing. HTTPS servers should be hosted on port 443. Configuring HTTPS certificates and keys can be done in the `.env` file, as specified in the [configuration section](#configuration) above.
 
 ## MySQL database
 A MySQL database is used to store user data. It uses the following schema:
