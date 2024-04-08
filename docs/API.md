@@ -400,8 +400,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 #### JSON request content:
 ```
 {
-	"name": <conversation name>,
-	"employees": [
+   "name": <conversation name>,
+   "employees": [
       "employee_username",
       ...
    ]
