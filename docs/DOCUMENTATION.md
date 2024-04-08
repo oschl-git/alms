@@ -75,6 +75,7 @@ PORT=<port ALMS should run on>
 USE_HTTPS=<true/false>
 HTTPS_CERT="<path to an HTTPS certificate>"
 HTTPS_KEY="<path to an HTTPS key>"
+MAX_REQUESTS_PER_MINUTE=<maximum amount of requests a single IP can do per minute>
 
 # Message encryption
 ENCRYPTION_KEY = "<a 32 byte encryption key>"
@@ -93,11 +94,12 @@ LOG_FOLDER="/home/user/logs/alms"
 # Session token configuration
 TOKEN_VALID_FOR_MIN=10
 
-# HTTPS configuration
+# HTTP/HTTPS configuration
 PORT=443
 USE_HTTPS=true
 HTTPS_CERT="/etc/letsencrypt/live/domain/fullchain.pem"
 HTTPS_KEY="/etc/letsencrypt/live/domain/privkey.pem"
+MAX_REQUESTS_PER_MINUTE=10
 
 # Message encryption
 ENCRYPTION_KEY = "ykZVeqavTHTIce8OZohiY1yPEf9E4TqP" # CHANGE THIS!

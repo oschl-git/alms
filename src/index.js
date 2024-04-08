@@ -47,7 +47,7 @@ async function main() {
 	// set up rate limiting
 	const limiter = rateLimit({
 		windowMs: 1 * 60 * 1000,
-		max: 250,
+		max: process.env.MAX_REQUESTS_PER_MINUTE ?? 250,
 		standardHeaders: true,
 		legacyHeaders: false,
 		message: tooManyRequestsResponse,
