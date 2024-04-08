@@ -82,8 +82,8 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 #### JSON request content:
 ```
 {
-	"username": "<username>",
-	"password": "<password>"
+   "username": "<username>",
+   "password": "<password>"
 }
 ```
 
@@ -125,10 +125,10 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 #### JSON request content:
 ```
 {
-	"username": "<username>",
-	"password": "<password>",
-	"name": "<first name>",
-	"surname": "<surname>"
+   "username": "<username>",
+   "password": "<password>",
+   "name": "<first name>",
+   "surname": "<surname>"
 }
 ```
 
@@ -444,8 +444,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 #### JSON request content:
 ```
 {
-	"conversationId": <conversation id>,
-	"content": "<message content>"
+   "conversationId": <conversation id>,
+   "content": "<message content>"
 }
 ```
 
@@ -483,7 +483,7 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 #### 200 OK response:
 ```
 [
-      {
+   {
       "id": <message id>,
       "employeeId": <author employee id>,
       "username": "<author employee username>",
@@ -514,7 +514,7 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 #### 200 OK response:
 ```
 [
-      {
+   {
       "id": <message id>,
       "employeeId": <author employee id>,
       "username": "<author employee username>",
