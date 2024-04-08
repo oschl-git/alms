@@ -78,6 +78,20 @@ router.post('/', async function (req, res) {
 		return;
 	}
 
+	let employeeId = await employees.getEmployeeIdByUsername(body.username);
+	if (await conversations.doesEmployeeHaveAccess(employeeId, body.conversationId)) {
+		res.status(400);
+		res.json({
+			error: 400,
+			message: 'EMPLOYEE ALREADY IN CONVERSATION',
+		});
+		logger.warning(
+			`${req.method} fail: Client attempted adding an employee to ` +
+			`a group conversation that they already have access to at ${req.originalUrl}. (${req.ip})`
+		);
+		return;
+	}
+
 	try {
 		await conversations.addNewConversationEmployeeRelation(body.conversationId, body.username);
 

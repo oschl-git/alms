@@ -519,6 +519,7 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
    - *JSON FIELDS MISSING*
    - *USERNAME MUST BE STRING*
    - *CONVERSATION NOT GROUP*
+   - *EMPLOYEE ALREADY IN CONVERSATION*
 - **404**
    - *CONVERSATION NOT FOUND*
    - *EMPLOYEE NOT FOUND*

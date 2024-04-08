@@ -94,6 +94,10 @@ async function getEmployeesInConversation(conversationId) {
 	return employees;
 }
 
+async function setEmployeeColor(employeeId, colorId) {
+	await query('update employees set color=? where id=?;', colorId, employeeId);
+}
+
 function mapResponseToObject(response) {
 	return {
 		id: response.id,
@@ -124,4 +128,5 @@ module.exports = {
 	getEmployeeIdByUsername,
 	getRegisteredUserCount,
 	getEmployeesInConversation,
+	setEmployeeColor,
 };

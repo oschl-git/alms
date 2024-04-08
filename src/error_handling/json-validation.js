@@ -4,7 +4,8 @@
 
 function checkFieldsArePresent(...fields) {
 	for (const field of fields) {
-		if (!field) {
+		console.log(field);
+		if (field !== 0 && !field) {
 			return false;
 		}
 	}
@@ -14,6 +15,15 @@ function checkFieldsArePresent(...fields) {
 function checkFieldsAreString(...fields) {
 	for (const field of fields) {
 		if (typeof field !== 'string') {
+			return false;
+		}
+	}
+	return true;
+}
+
+function checkFieldsAreInteger(...fields) {
+	for (const field of fields) {
+		if (!Number.isInteger(field)) {
 			return false;
 		}
 	}
@@ -32,5 +42,6 @@ function checkFieldsAreArray(...fields) {
 module.exports = {
 	checkFieldsArePresent,
 	checkFieldsAreString,
+	checkFieldsAreInteger,
 	checkFieldsAreArray,
 };
