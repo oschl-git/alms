@@ -5,7 +5,7 @@
 const { query, queryInsertReturnInsertedId, beginTransaction, commit, rollback } = require('../connection');
 
 async function getAllEmployees() {
-	const result = await query('select id, username, name, surname from employees;');
+	const result = await query('select id, username, name, surname, color from employees;');
 	if (result.length <= 0) return [];
 
 	let employees = [];
