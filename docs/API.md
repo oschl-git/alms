@@ -59,7 +59,7 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 ```
 {
    "status": "<ALMS status>",
-   "stats":    {
+   "stats": {
       "activeUsers": <number of active/online users>,
       "totalUsers": <number of total registered accounts>,
       "uptime": <uptime in seconds>,
@@ -74,7 +74,7 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 ---
 
 ### POST `/login`
-- the login endpoint allowing user authentication
+- handles user login and allows user authentication
 
 #### Required headers:
 - none
@@ -119,7 +119,7 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 ---
 
 ### POST `/register`
-- the register endpoint allowing creation of new users
+- allows creating new users
 #### Required headers:
 - none
 #### JSON request content:
@@ -162,7 +162,7 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 ---
 
 ### GET `/is-username-taken/<username>`
-- an endpoint which returns a true/false response based on if the provided username is already taken
+- returns a true/false response based on if the provided username is already taken
 
 #### Required headers:
 - none
@@ -178,7 +178,7 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 ---
 
 ### GET `/get-direct-conversation/<username>`
-- an endpoint which returns a direct conversation object with another employee
+- returns a direct conversation object with another employee
 
 #### Required headers:
 - [authentication header](#authentication-header)
@@ -215,7 +215,7 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 ---
 
 ### GET `/get-conversation-by-id/<id>`
-- an endpoint which returns a conversation object of the specified ID
+- returns a conversation object of the specified ID
 
 #### Required headers:
 - [authentication header](#authentication-header)
@@ -249,7 +249,7 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 ---
 
 ### GET `/get-all-conversations`
-- an endpoint which returns an array of all conversation objects the employee is part of 
+- returns an array of all conversation objects the employee is part of 
 
 #### Required headers:
 - [authentication header](#authentication-header)
@@ -284,7 +284,7 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 ---
 
 ### GET `/get-direct-conversations`
-- an endpoint which returns an array of all **direct** conversation objects the employee is part of 
+- returns an array of all **direct** conversation objects the employee is part of 
 
 #### Required headers:
 - [authentication header](#authentication-header)
@@ -320,7 +320,7 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 ---
 
 ### GET `/get-group-conversations`
-- an endpoint which returns an array of all **group** conversation objects the employee is part of 
+- returns an array of all **group** conversation objects the employee is part of 
 
 #### Required headers:
 - [authentication header](#authentication-header)
@@ -355,7 +355,7 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 ---
 
 ### GET `/get-unread-conversations`
-- an endpoint which returns an array of all conversation objects the employee is part of and that contain messages the employee hasn't viewed yet
+- returns an array of all conversation objects the employee is part of and that contain messages the employee hasn't viewed yet
 - **in comparison to other conversation endpoints, these conversation objects also include the amount of unread messages**
 
 #### Required headers:
@@ -429,14 +429,14 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
    - *NAME TOO LONG*
    - *TOO MANY PARTICIPANTS*
    - *EMPLOYEES DO NOT EXIST*
-      - this response also includes an array titled "nonexistentUsernames" that includes all usernames that were supplied and do not actually exist
+      - this response also includes an array titled `nonexistentUsernames` that includes all usernames that were supplied and do not actually exist
 - **500**
    - *INTERNAL ALMS ERROR*
 
 ---
 
 ### POST `/send-message`
-- and endpoint allowing users to send messages to conversations
+- sends message to a conversation
 
 #### Required headers:
 - [authentication header](#authentication-header)
@@ -474,7 +474,7 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 ---
 
 ### GET `/get-messages/<conversation id>`
-- an endpoint which returns a list of the 100 most recent messages in a conversation 
+- returns a list of the 100 most recent messages in a conversation 
 - requesting this endpoint will mark all messages in the conversation as "read"
 
 #### Required headers:
@@ -505,7 +505,7 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 ---
 
 ### GET `/get-unread-messages/<conversation id>`
-- an endpoint which returns a list of all **unread** messages in a conversation 
+- returns a list of all **unread** messages in a conversation 
 - requesting this endpoint will mark all messages in the conversation as "read"
 
 #### Required headers:
