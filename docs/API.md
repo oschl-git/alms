@@ -3,7 +3,6 @@ This document attempts to be an exhaustive guide to using ALMS API and its endpo
 
 **To learn about general ALMS functionality, checkout the [documentation](DOCUMENTATION.md).**
 
-
 # General API information
 
 ## Authentication header
@@ -17,6 +16,7 @@ All error responses include the same JSON content. It is of the following format
    "message": "<error detail message>"
 }
 ```
+
 Sometimes, error responses can include additional fields, for example a list of supplied users that do not exist.
 
 ## Authentication error responses
@@ -36,6 +36,7 @@ Endpoints that do not return anything will return a generic success response of 
    "message": "OK"
 }
 ```
+
 ## Rate limiting
 ALMS limits the number of responses per minute per IP address. The limit is currently hardcoded and is 250 requests per minute. If the amount is exceeded, the server responds with a 429 error code and the following response is sent:
 ```
@@ -55,7 +56,6 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 - none
 
 #### 200 OK response:
-
 ```
 {
    "status": "<ALMS status>",
@@ -73,11 +73,12 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 
 ---
 
-
 ### POST `/login`
 - the login endpoint allowing user authentication
+
 #### Required headers:
 - none
+
 #### JSON request content:
 ```
 {
@@ -86,7 +87,7 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 }
 ```
 
-### JSON filed requirements
+#### JSON field requirements
 - username
    - string
 - password
@@ -162,10 +163,11 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 
 ### GET `/is-username-taken/<username>`
 - an endpoint which returns a true/false response based on if the provided username is already taken
+
 #### Required headers:
 - none
-#### 200 OK response:
 
+#### 200 OK response:
 ```
 <true/false>
 ```
@@ -177,12 +179,12 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 
 ### GET `/get-direct-conversation/<username>`
 - an endpoint which returns a direct conversation object with another employee
+
 #### Required headers:
 - [authentication header](#authentication-header)
+
 #### 200 OK response:
-
 Note: Direct conversations do not have a name, so their "name" attribute is always null.
-
 ```
 {
    "id": <conversation id>,
@@ -214,8 +216,10 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 
 ### GET `/get-conversation-by-id/<id>`
 - an endpoint which returns a conversation object of the specified ID
+
 #### Required headers:
 - [authentication header](#authentication-header)
+
 #### 200 OK response:
 ```
 {
@@ -246,8 +250,10 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 
 ### GET `/get-all-conversations`
 - an endpoint which returns an array of all conversation objects the employee is part of 
+
 #### Required headers:
 - [authentication header](#authentication-header)
+
 #### 200 OK response:
 ```
 [
@@ -279,12 +285,12 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 
 ### GET `/get-direct-conversations`
 - an endpoint which returns an array of all **direct** conversation objects the employee is part of 
+
 #### Required headers:
 - [authentication header](#authentication-header)
+
 #### 200 OK response:
-
 Note: Direct conversations do not have a name, so their "name" attribute is always null.
-
 ```
 [
    {
@@ -315,8 +321,10 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 
 ### GET `/get-group-conversations`
 - an endpoint which returns an array of all **group** conversation objects the employee is part of 
+
 #### Required headers:
 - [authentication header](#authentication-header)
+
 #### 200 OK response:
 ```
 [
@@ -349,8 +357,10 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 ### GET `/get-unread-conversations`
 - an endpoint which returns an array of all conversation objects the employee is part of and that contain messages the employee hasn't viewed yet
 - **in comparison to other conversation endpoints, these conversation objects also include the amount of unread messages**
+
 #### Required headers:
 - [authentication header](#authentication-header)
+
 #### 200 OK response:
 ```
 [
@@ -383,8 +393,10 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 
 ### POST `/create-group-conversation`
 - creates a new group conversation
+
 #### Required headers:
 - [authentication header](#authentication-header)
+
 #### JSON request content:
 ```
 {
@@ -425,8 +437,10 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 
 ### POST `/send-message`
 - and endpoint allowing users to send messages to conversations
+
 #### Required headers:
 - [authentication header](#authentication-header)
+
 #### JSON request content:
 ```
 {
@@ -462,8 +476,10 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 ### GET `/get-messages/<conversation id>`
 - an endpoint which returns a list of the 100 most recent messages in a conversation 
 - requesting this endpoint will mark all messages in the conversation as "read"
+
 #### Required headers:
 - [authentication header](#authentication-header)
+
 #### 200 OK response:
 ```
 [
@@ -491,8 +507,10 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 ### GET `/get-unread-messages/<conversation id>`
 - an endpoint which returns a list of all **unread** messages in a conversation 
 - requesting this endpoint will mark all messages in the conversation as "read"
+
 #### Required headers:
 - [authentication header](#authentication-header)
+
 #### 200 OK response:
 ```
 [
