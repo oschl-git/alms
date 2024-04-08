@@ -52,7 +52,7 @@ router.post('/', async function (req, res) {
 	// Add current user to the conversation
 	const employees = body.employees.concat([employee.username]);
 
-	if (employees.length > 10) {
+	if (employees.length > 100) {
 		res.status(400);
 		res.json({
 			error: 400,
