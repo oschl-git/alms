@@ -1,5 +1,5 @@
 /**
- * Handles the /set-color endpoint
+ * Handles the /set-employee-color endpoint
  */
 
 const authenticator = require('../security/authenticator');

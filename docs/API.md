@@ -528,6 +528,56 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 
 ---
 
+### POST `/set-employee-color`
+- sets the display color of the logged in employee
+
+#### Required headers:
+- [authentication header](#authentication-header)
+
+#### JSON request content:
+```
+{
+   "color": <color>
+}
+```
+
+#### JSON field requirements
+- color
+   - int
+   - must be a number between 0-15
+      <ol start="0">
+         <li>BLACK</li>
+         <li>DARK BLUE</li>
+         <li>DARK GREEN</li>
+         <li>DARK CYAN</li>
+         <li>DARK RED</li>
+         <li>DARK MAGENTA</li>
+         <li>DARK YELLOW</li>
+         <li>GRAY</li>
+         <li>DARK GRAY</li>
+         <li>BLUE</li>
+         <li>GREEN</li>
+         <li>CYAN</li>
+         <li>RED</li>
+         <li>MAGENTA</li>
+         <li>YELLOW</li>
+         <li>WHITE</li>
+      </ol>
+
+#### 200 OK response:
+- [default success response](#success-response)
+
+#### ERROR responses:
+- **401**
+   - [authentication error responses](#authentication-error-responses)
+- **400**
+   - *COLOR JSON FIELD MISSING*
+   - *COLOR MUST BE INTEGER*
+   - *INVALID COLOR*
+- **500**
+   - *INTERNAL ALMS ERROR*
+---
+
 ### POST `/send-message`
 - sends message to a conversation
 
