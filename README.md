@@ -17,6 +17,8 @@ For an example of a client, check out [**Aperture Messenger**](https://github.co
 - HTTPS 🔒
 - request logging 🖊️
 - rate limiting ⏱
+- users can choose their display colour 
+- configurable ⚙️
 
 More features, such as group administrator functionality, might be added in the future.
 
