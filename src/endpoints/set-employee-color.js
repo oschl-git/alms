@@ -2,20 +2,16 @@
  * Handles the /set-employee-color endpoint
  */
 
-const authenticator = require('../security/authenticator');
+const { handleEndpoint } = require('../helpers/endpoint-handler');
 const employees = require('../database/gateways/employee-gateway');
 const express = require('express');
 const jsonValidation = require('../error_handling/json-validation');
 const logger = require('../logging/logger');
 
 const router = express.Router();
+router.post('/', (req, res) => { handleEndpoint(req, res, handle, true); });
 
-router.post('/', async function (req, res) {
-	const employee = await authenticator.authenticate(req, res);
-	if (typeof employee !== 'object') {
-		return;
-	};
-
+async function handle(req, res, employee) {
 	const body = req.body;
 
 	if (!jsonValidation.checkFieldsArePresent(body.color)) {
@@ -48,26 +44,14 @@ router.post('/', async function (req, res) {
 		return;
 	}
 
-	try {
-		await employees.setEmployeeColor(employee.id, body.color);
+	await employees.setEmployeeColor(employee.id, body.color);
 
-		logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
-		res.status(200);
-		res.json({
-			response: 200,
-			message: "OK",
-		});
-	}
-	catch (e) {
-		res.status(500);
-		res.json({
-			error: 500,
-			message: 'INTERNAL ALMS ERROR',
-		});
-		logger.error(
-			`${req.method} error: Error setting employee color at ${req.originalUrl}. (${req.ip})\n${e}`
-		);
-	}
-});
+	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
+	res.status(200);
+	res.json({
+		response: 200,
+		message: "OK",
+	});
+}
 
 module.exports = router; 

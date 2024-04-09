@@ -2,7 +2,7 @@
  * Handles the /get-unread-messages endpoint
  */
 
-const authenticator = require('../security/authenticator');
+const { handleEndpoint } = require('../helpers/endpoint-handler');
 const conversations = require('../database/gateways/conversation-gateway');
 const encryptor = require('../security/message-encryptor');
 const express = require('express');
@@ -10,13 +10,9 @@ const logger = require('../logging/logger');
 const messages = require('../database/gateways/message-gateway');
 
 const router = express.Router();
+router.get('/:conversationId', (req, res) => { handleEndpoint(req, res, handle, true); });
 
-router.get('/:conversationId', async function (req, res) {
-	const employee = await authenticator.authenticate(req, res);
-	if (typeof employee !== 'object') {
-		return;
-	};
-
+async function handle(req, res, employee) {
 	const params = req.params;
 
 	if (! await conversations.doesEmployeeHaveAccess(employee.id, params.conversationId)) {
@@ -40,6 +36,6 @@ router.get('/:conversationId', async function (req, res) {
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
 	res.json(decryptedMessages);
-});
+}
 
 module.exports = router; 

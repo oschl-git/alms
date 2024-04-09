@@ -2,6 +2,7 @@
  * Handles the index (/) endpoint
  */
 
+const { handleEndpoint } = require('../helpers/endpoint-handler');
 const employees = require('../database/gateways/employee-gateway');
 const express = require('express');
 const logger = require('../logging/logger');
@@ -9,8 +10,9 @@ const package = require('../../package.json');
 const session_tokens = require('../database/gateways/session-token-gateway');
 
 const router = express.Router();
+router.get('/', (req, res) => { handleEndpoint(req, res, handle); });
 
-router.get('/', async function (req, res) {
+async function handle(req, res) {
 	const activeUsers = await session_tokens.getActiveSessionTokenCount();
 	const totalUsers = await employees.getRegisteredUserCount();
 
@@ -25,6 +27,6 @@ router.get('/', async function (req, res) {
 			version: package.version,
 		},
 	});
-});
+}
 
 module.exports = router; 

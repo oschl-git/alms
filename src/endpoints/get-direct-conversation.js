@@ -2,20 +2,16 @@
  * Handles the /get-direct-conversation endpoint
  */
 
-const authenticator = require('../security/authenticator');
+const { handleEndpoint } = require('../helpers/endpoint-handler');
 const conversations = require('../database/gateways/conversation-gateway');
 const employees = require('../database/gateways/employee-gateway');
 const express = require('express');
 const logger = require('../logging/logger');
 
 const router = express.Router();
+router.get('/:employeeUsername', (req, res) => { handleEndpoint(req, res, handle, true); });
 
-router.get('/:employeeUsername', async function (req, res) {
-	const employee = await authenticator.authenticate(req, res);
-	if (typeof employee !== 'object') {
-		return;
-	};
-
+async function handle(req, res, employee) {
 	if (! await employees.isUsernameTaken(req.params.employeeUsername)) {
 		res.status(404);
 		res.json({
@@ -58,6 +54,6 @@ router.get('/:employeeUsername', async function (req, res) {
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
 	res.json(conversation);
-});
+}
 
 module.exports = router; 

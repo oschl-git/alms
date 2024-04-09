@@ -2,7 +2,7 @@
  * Handles the /send-message endpoint
  */
 
-const authenticator = require('../security/authenticator');
+const { handleEndpoint } = require('../helpers/endpoint-handler');
 const conversations = require('../database/gateways/conversation-gateway');
 const encryptor = require('../security/message-encryptor');
 const express = require('express');
@@ -11,13 +11,9 @@ const logger = require('../logging/logger');
 const messages = require('../database/gateways/message-gateway');
 
 const router = express.Router();
+router.post('/', (req, res) => { handleEndpoint(req, res, handle, true); });
 
-router.post('/', async function (req, res) {
-	const employee = await authenticator.authenticate(req, res);
-	if (typeof employee !== 'object') {
-		return;
-	};
-
+async function handle(req, res, employee) {
 	const body = req.body;
 
 	if (!jsonValidation.checkFieldsArePresent(body.conversationId, body.content)) {
@@ -65,26 +61,13 @@ router.post('/', async function (req, res) {
 
 	let encryptedContent = encryptor.encrypt(body.content);
 
-	try {
-		await messages.addNewMessage(employee.id, body.conversationId, encryptedContent);
-
-		logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
-		res.status(200);
-		res.json({
-			response: 200,
-			message: "OK",
-		});
-	}
-	catch (e) {
-		res.status(500);
-		res.json({
-			error: 500,
-			message: 'INTERNAL ALMS ERROR',
-		});
-		logger.error(
-			`${req.method} error: Error adding new message to database at ${req.originalUrl}. (${req.ip})\n${e}`
-		);
-	}
-});
+	await messages.addNewMessage(employee.id, body.conversationId, encryptedContent);
+	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
+	res.status(200);
+	res.json({
+		response: 200,
+		message: "OK",
+	});
+}
 
 module.exports = router; 

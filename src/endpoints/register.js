@@ -2,6 +2,7 @@
  * Handles the /register endpoint
  */
 
+const { handleEndpoint } = require('../helpers/endpoint-handler');
 const employees = require('../database/gateways/employee-gateway');
 const express = require('express');
 const jsonValidation = require('../error_handling/json-validation');
@@ -9,8 +10,9 @@ const logger = require('../logging/logger');
 const passwordHasher = require('../security/password-hasher');
 
 const router = express.Router();
+router.post('/', (req, res) => { handleEndpoint(req, res, handle); });
 
-router.post('/', async function (req, res) {
+async function handle(req, res) {
 	const body = req.body;
 
 	if (!jsonValidation.checkFieldsArePresent(body.username, body.name, body.surname, body.password)) {
@@ -57,35 +59,20 @@ router.post('/', async function (req, res) {
 
 	const hashedPassword = passwordHasher.hashPassword(body.password);
 
-	try {
-		await employees.addNewEmployee(
-			body.username,
-			body.name,
-			body.surname,
-			hashedPassword,
-			req.ip
-		);
-	}
-	catch (e) {
-		res.status(500);
-		res.json({
-			error: 500,
-			message: 'INTERNAL ALMS ERROR',
-		});
-		logger.error(
-			`${req.method} error: ` +
-			`Error adding new user to database at ${req.originalUrl}. (${req.ip})\n${e}`
-		);
-		return;
-	}
-
+	await employees.addNewEmployee(
+		body.username,
+		body.name,
+		body.surname,
+		hashedPassword,
+		req.ip
+	);
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
 	res.json({
 		response: 200,
 		message: "OK",
 	});
-});
+}
 
 function checkFieldsForErrors(body) {
 	let errors = [];

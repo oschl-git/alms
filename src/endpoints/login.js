@@ -2,17 +2,18 @@
  * Handles the /login endpoint
  */
 
+const { handleEndpoint } = require('../helpers/endpoint-handler');
 const employees = require('../database/gateways/employee-gateway');
 const express = require('express');
 const jsonValidation = require('../error_handling/json-validation');
 const logger = require('../logging/logger');
-const package = require('../../package.json');
 const passwordHasher = require('../security/password-hasher');
 const sessionTokens = require('../database/gateways/session-token-gateway');
 
 const router = express.Router();
+router.post('/', (req, res) => { handleEndpoint(req, res, handle); });
 
-router.post('/', async function (req, res) {
+async function handle(req, res) {
 	const body = req.body;
 
 	if (!jsonValidation.checkFieldsArePresent(body.username, body.password)) {
@@ -46,36 +47,7 @@ router.post('/', async function (req, res) {
 		return;
 	}
 
-	if (passwordHasher.doPasswordsMatch(body.password, employee.password)) {
-		let token = null;
-		try {
-			token = await sessionTokens.createAndReturnNewSessionToken(employee.id);
-		}
-		catch (e) {
-			res.status(500);
-			res.json({
-				error: 500,
-				message: 'INTERNAL ALMS ERROR',
-			});
-			logger.error(
-				`${req.method} error: ` +
-				`Error adding new session token to database at ${req.originalUrl}. (${req.ip})\n${e}`
-			);
-			return;
-		}
-
-		logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
-		res.status(200);
-		res.json({
-			token: token,
-			employee: {
-				id: employee.id,
-				username: employee.username,
-				name: employee.name,
-				surname: employee.surname,
-			},
-		});
-	} else {
+	if (!passwordHasher.doPasswordsMatch(body.password, employee.password)) {
 		res.status(401);
 		res.json({
 			error: 401,
@@ -87,6 +59,20 @@ router.post('/', async function (req, res) {
 		);
 		return;
 	}
-});
+
+	let token = await sessionTokens.createAndReturnNewSessionToken(employee.id);
+
+	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
+	res.status(200);
+	res.json({
+		token: token,
+		employee: {
+			id: employee.id,
+			username: employee.username,
+			name: employee.name,
+			surname: employee.surname,
+		},
+	});
+}
 
 module.exports = router; 

@@ -2,19 +2,15 @@
  * Handles the /get-conversation-by-id endpoint
  */
 
+const { handleEndpoint } = require('../helpers/endpoint-handler');
 const conversations = require('../database/gateways/conversation-gateway');
 const express = require('express');
 const logger = require('../logging/logger');
-const authenticator = require('../security/authenticator');
 
 const router = express.Router();
+router.get('/:id', (req, res) => { handleEndpoint(req, res, handle, true); });
 
-router.get('/:id', async function (req, res) {
-	const employee = await authenticator.authenticate(req, res);
-	if (typeof employee !== 'object') {
-		return;
-	};
-
+async function handle(req, res, employee) {
 	const id = req.params.id;
 
 	if (! await conversations.doesEmployeeHaveAccess(employee.id, id)) {
@@ -32,6 +28,6 @@ router.get('/:id', async function (req, res) {
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);
 	res.json(await conversations.getConversationWithParticipantsById(id));
-});
+}
 
 module.exports = router; 

@@ -4,7 +4,6 @@
 
 function checkFieldsArePresent(...fields) {
 	for (const field of fields) {
-		console.log(field);
 		if (field !== 0 && !field) {
 			return false;
 		}
