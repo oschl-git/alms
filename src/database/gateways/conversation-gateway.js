@@ -134,6 +134,7 @@ async function getParticipantsForConversation(conversationId) {
 			username: participant.username,
 			name: participant.name,
 			surname: participant.surname,
+			color: participant.color,
 		});
 	}
 

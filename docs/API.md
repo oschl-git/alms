@@ -176,13 +176,14 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 #### 200 OK response:
 ```
 [
-  {
-    "id": <employee id>,
-    "username": "<employee username>",
-    "name": "<employee name>",
-    "surname": "<employee surname>"
-  },
-  ...
+   {
+      "id": <employee id>,
+      "username": "<employee username>",
+      "name": "<employee name>",
+      "surname": "<employee surname>",
+      "color": <color/null>
+   },
+   ...
 ]
 ```
 
@@ -201,13 +202,14 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 #### 200 OK response:
 ```
 [
-  {
-    "id": <employee id>,
-    "username": "<employee username>",
-    "name": "<employee name>",
-    "surname": "<employee surname>"
-  },
-  ...
+   {
+      "id": <employee id>,
+      "username": "<employee username>",
+      "name": "<employee name>",
+      "surname": "<employee surname>",
+      "color": <color/null>
+   },
+   ...
 ]
 ```
 
@@ -254,7 +256,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
          "id": <employee id>,
          "username": "<employee username>",
          "name": "<employee name>",
-         "surname": "<employee surname>"
+         "surname": "<employee surname>",
+         "color": <color/null>
       },
       ...
    ]
@@ -290,7 +293,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
          "id": <employee id>,
          "username": "<employee username>",
          "name": "<employee name>",
-         "surname": "<employee surname>"
+         "surname": "<employee surname>",
+         "color": <color/null>
       },
       ...
    ]
@@ -327,7 +331,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
             "id": <employee id>,
             "username": "<employee username>",
             "name": "<employee name>",
-            "surname": "<employee surname>"
+            "surname": "<employee surname>",
+            "color": <color/null>
          },
          ...
       ]
@@ -365,7 +370,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
             "id": <employee id>,
             "username": "<employee username>",
             "name": "<employee name>",
-            "surname": "<employee surname>"
+            "surname": "<employee surname>",
+            "color": <color/null>
          },
          ...
       ]
@@ -402,7 +408,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
             "id": <employee id>,
             "username": "<employee username>",
             "name": "<employee name>",
-            "surname": "<employee surname>"
+            "surname": "<employee surname>",
+            "color": <color/null>
          },
          ...
       ]
@@ -441,7 +448,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
             "id": <employee id>,
             "username": "<employee username>",
             "name": "<employee name>",
-            "surname": "<employee surname>"
+            "surname": "<employee surname>",
+            "color": <color/null>
          },
          ...
       ]
@@ -559,24 +567,23 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 - color
    - int
    - must be a number between 0-15
-      <ol start="0">
-         <li>BLACK</li>
-         <li>DARK BLUE</li>
-         <li>DARK GREEN</li>
-         <li>DARK CYAN</li>
-         <li>DARK RED</li>
-         <li>DARK MAGENTA</li>
-         <li>DARK YELLOW</li>
-         <li>GRAY</li>
-         <li>DARK GRAY</li>
-         <li>BLUE</li>
-         <li>GREEN</li>
-         <li>CYAN</li>
-         <li>RED</li>
-         <li>MAGENTA</li>
-         <li>YELLOW</li>
-         <li>WHITE</li>
-      </ol>
+      - 0. **BLACK**
+      - 1. **DARK BLUE**
+      - 2. **DARK GREEN**
+      - 3. **DARK CYAN**
+      - 4. **DARK RED**
+      - 5. **DARK MAGENTA**
+      - 6. **DARK YELLOW**
+      - 7. **GRAY**
+      - 8. **DARK GRAY**
+      - 9. **BLUE**
+      - 10. **GREEN**
+      - 11. **CYAN**
+      - 12. **RED**
+      - 13. **MAGENTA**
+      - 14. **YELLOW**
+      - 16. **WHITE**
+      
 
 #### 200 OK response:
 - [default success response](#success-response)
@@ -646,6 +653,7 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
       "username": "<author employee username>",
       "name": "<author employee name>",
       "surname": "<author employee surname>",
+      "color": <color/null>,
       "content": "<message content>",
       "datetimeSent": "<date and time when the message was sent>"
    },
@@ -679,6 +687,7 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
       "username": "<author employee username>",
       "name": "<author employee name>",
       "surname": "<author employee surname>",
+      "color": <color/null>,
       "content": "<message content>",
       "datetimeSent": "<date and time when the message was sent>"
    },
