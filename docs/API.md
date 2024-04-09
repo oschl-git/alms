@@ -74,7 +74,8 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 ```
 
 #### ERROR responses:
-- none
+- **500**
+   - *INTERNAL ALMS ERROR*
 
 ---
 
@@ -186,7 +187,8 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 ```
 
 #### ERROR responses:
-- none
+- **500**
+   - *INTERNAL ALMS ERROR*
 
 ---
 
@@ -210,7 +212,8 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 ```
 
 #### ERROR responses:
-- none
+- **500**
+   - *INTERNAL ALMS ERROR*
 
 ---
 
@@ -226,7 +229,8 @@ ALMS limits the number of responses per minute per IP address. The limit is curr
 ```
 
 #### ERROR responses:
-- none
+- **500**
+   - *INTERNAL ALMS ERROR*
 
 ---
 
@@ -298,6 +302,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
    - [authentication error responses](#authentication-error-responses)
 - **404**
    - *CONVERSATION NOT FOUND*
+- **500**
+   - *INTERNAL ALMS ERROR*
 
 ---
 
@@ -333,6 +339,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 #### ERROR responses:
 - **401**
    - [authentication error responses](#authentication-error-responses)
+- **500**
+   - *INTERNAL ALMS ERROR*
 
 ---
 
@@ -369,6 +377,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 #### ERROR responses:
 - **401**
    - [authentication error responses](#authentication-error-responses)
+- **500**
+   - *INTERNAL ALMS ERROR*
 
 ---
 
@@ -404,6 +414,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 #### ERROR responses:
 - **401**
    - [authentication error responses](#authentication-error-responses)
+- **500**
+   - *INTERNAL ALMS ERROR*
 
 ---
 
@@ -441,6 +453,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 #### ERROR responses:
 - **401**
    - [authentication error responses](#authentication-error-responses)
+- **500**
+   - *INTERNAL ALMS ERROR*
 
 ---
 
@@ -644,6 +658,8 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
    - [authentication error responses](#authentication-error-responses)
 - **404**
    - *CONVERSATION NOT FOUND*
+- **500**
+   - *INTERNAL ALMS ERROR*
 
 ---
 
@@ -675,3 +691,5 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
    - [authentication error responses](#authentication-error-responses)
 - **404**
    - *CONVERSATION NOT FOUND*
+- **500**
+   - *INTERNAL ALMS ERROR*
