@@ -13,7 +13,8 @@ async function addNewMessage(employeeId, conversationId, content) {
 
 async function getMessagesFromConversation(conversationId, limit = 100) {
 	const result = await query(
-		'select m.id, e.id as id_employee, e.username, e.name, e.surname, m.content, m.datetime_sent from messages m ' +
+		'select m.id, e.id as id_employee, e.username, e.name, e.surname, e.color, m.content, m.datetime_sent ' +
+		'from messages m ' +
 		'left join employees e on m.id_employee = e.id ' +
 		'where id_conversation = ? ' +
 		'order by datetime_sent desc ' +
@@ -30,7 +31,8 @@ async function getMessagesFromConversation(conversationId, limit = 100) {
 
 async function getUnreadMessagesFromConversation(conversationId, userId, limit = 100) {
 	const result = await query(
-		'select m.id, e.id as id_employee, e.username, e.name, e.surname, m.content, m.datetime_sent from messages m ' +
+		'select m.id, e.id as id_employee, e.username, e.name, e.surname, e.color, m.content, m.datetime_sent ' +
+		'from messages m ' +
 		'left join employees e on m.id_employee = e.id ' +
 		'left join read_messages rm on m.id = rm.id_message ' +
 		'and rm.id_employee = ? ' +
@@ -79,6 +81,7 @@ function mapResponseToObject(response) {
 		username: response.username,
 		name: response.name,
 		surname: response.surname,
+		color: response.color,
 		content: response.content,
 		datetimeSent: response.datetime_sent,
 	};
