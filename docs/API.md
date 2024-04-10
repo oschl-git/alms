@@ -568,22 +568,22 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
 - color
    - int
    - must be a number between 0-15
-      - 0. **BLACK**
-      - 1. **DARK BLUE**
-      - 2. **DARK GREEN**
-      - 3. **DARK CYAN**
-      - 4. **DARK RED**
-      - 5. **DARK MAGENTA**
-      - 6. **DARK YELLOW**
-      - 7. **GRAY**
-      - 8. **DARK GRAY**
-      - 9. **BLUE**
-      - 10. **GREEN**
-      - 11. **CYAN**
-      - 12. **RED**
-      - 13. **MAGENTA**
-      - 14. **YELLOW**
-      - 16. **WHITE**
+      - 0 = **BLACK**
+      - 1 = **DARK BLUE**
+      - 2 = **DARK GREEN**
+      - 3 = **DARK CYAN**
+      - 4 = **DARK RED**
+      - 5 = **DARK MAGENTA**
+      - 6 = **DARK YELLOW**
+      - 7 = **GRAY**
+      - 8 = **DARK GRAY**
+      - 9 = **BLUE**
+      - 10 = **GREEN**
+      - 11 = **CYAN**
+      - 12 = **RED**
+      - 13 = **MAGENTA**
+      - 14 = **YELLOW**
+      - 15 = **WHITE**
       
 
 #### 200 OK response:
