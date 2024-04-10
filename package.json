@@ -1,6 +1,6 @@
 {
   "name": "alms",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Aperture Laboratories Messaging Service",
   "main": "src/index.js",
   "scripts": {
