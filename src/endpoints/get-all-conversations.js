@@ -1,5 +1,6 @@
 /**
- * Handles the /get-all-conversations endpoint
+ * Handles the /get-all-conversations endpoint.
+ * Returns all conversations the employee has access to sorted by activity.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');

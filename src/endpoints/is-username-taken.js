@@ -1,5 +1,6 @@
 /**
- * Handles the /is-username-taken endpoint
+ * Handles the /is-username-taken endpoint.
+ * Returns true/false based on if the provided username is used by an employee.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');

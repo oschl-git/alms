@@ -1,5 +1,6 @@
 /**
- * Handles the /get-direct-conversation endpoint
+ * Handles the /get-direct-conversation endpoint.
+ * Returns a conversation object with the provided employee, provided the employee exists.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');
@@ -12,6 +13,7 @@ const router = express.Router();
 router.get('/:employeeUsername', (req, res) => { handleEndpoint(req, res, handle, true); });
 
 async function handle(req, res, employee) {
+	// Ensure employee exists
 	if (! await employees.isUsernameTaken(req.params.employeeUsername)) {
 		res.status(404);
 		res.json({
@@ -25,10 +27,12 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Attempt to get already existing direct conversation
 	let conversation = await conversations.getConversationBetweenTwoEmployees(
 		employee.username, req.params.employeeUsername
 	);
 
+	// If the conversation doesn't exist, create it
 	if (conversation === null) {
 		await conversations.createNewConversationWithEmployees(
 			null, [employee.username, req.params.employeeUsername]
@@ -39,15 +43,7 @@ async function handle(req, res, employee) {
 		);
 
 		if (conversation === null) {
-			res.status(500);
-			res.json({
-				error: 500,
-				message: 'INTERNAL ALMS ERROR',
-			});
-			logger.error(
-				`${req.method} error: Failed getting conversation after creating it at ${req.originalUrl}. (${req.ip})`
-			);
-			return;
+			throw new Error('Error getting direct conversation with another employee after creating it.');
 		}
 	}
 

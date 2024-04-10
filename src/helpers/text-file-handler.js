@@ -1,5 +1,5 @@
 /**
- * Handles writing text to files
+ * Handles writing text to files and logging.
  */
 
 const fs = require('fs');

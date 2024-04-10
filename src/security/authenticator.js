@@ -1,5 +1,5 @@
 /**
- * Handles authenticating employees with session tokens
+ * Handles authenticating employees with session tokens.
  */
 
 const employees = require('../database/gateways/employee-gateway');
@@ -18,20 +18,11 @@ const Results = {
  */
 async function authenticate(req) {
 	const token = req.headers.token;
-
-	if (!token) {
-		return Results.TOKEN_MISSING;
-	}
+	if (!token) return Results.TOKEN_MISSING;
 
 	const isTokenActive = await sessionTokens.isTokenActive(token);
-
-	if (isTokenActive === null) {
-		return Results.TOKEN_BAD;
-	}
-
-	if (!isTokenActive) {
-		return Results.TOKEN_EXPIRED;
-	}
+	if (isTokenActive === null) return Results.TOKEN_BAD;
+	if (!isTokenActive) return Results.TOKEN_EXPIRED;
 
 	await sessionTokens.refreshToken(token);
 

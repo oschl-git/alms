@@ -1,5 +1,6 @@
 /**
- * Handles the /get-conversation-by-id endpoint
+ * Handles the /get-conversation-by-id endpoint.
+ * Returns a conversation object of the provided ID, provided it exists and the employee has access.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');
@@ -13,6 +14,7 @@ router.get('/:id', (req, res) => { handleEndpoint(req, res, handle, true); });
 async function handle(req, res, employee) {
 	const id = req.params.id;
 
+	// Ensure employee has access and the conversation exists
 	if (! await conversations.doesEmployeeHaveAccess(employee.id, id)) {
 		res.status(404);
 		res.json({
@@ -30,4 +32,4 @@ async function handle(req, res, employee) {
 	res.json(await conversations.getConversationWithParticipantsById(id));
 }
 
-module.exports = router; 
+module.exports = router;

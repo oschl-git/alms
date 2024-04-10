@@ -1,5 +1,6 @@
 /**
- * Handles the /send-message endpoint
+ * Handles the /send-message endpoint.
+ * Handles sending new messages to conversations.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');
@@ -16,6 +17,7 @@ router.post('/', (req, res) => { handleEndpoint(req, res, handle, true); });
 async function handle(req, res, employee) {
 	const body = req.body;
 
+	// Ensure all required fields are present
 	if (!jsonValidation.checkFieldsArePresent(body.conversationId, body.content)) {
 		res.status(400);
 		res.json({
@@ -26,6 +28,18 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Ensure conversationId is int
+	if (!jsonValidation.checkFieldsAreInteger(body.conversationId)) {
+		res.status(400);
+		res.json({
+			error: 400,
+			message: 'CONVERSATION ID MUST BE INT',
+		});
+		logger.warning(`${req.method} fail: ConversationId field is not int at ${req.originalUrl}. (${req.ip})`);
+		return;
+	}
+
+	// Ensure content is string
 	if (!jsonValidation.checkFieldsAreString(body.content)) {
 		res.status(400);
 		res.json({
@@ -36,6 +50,7 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Ensure content is not longer than 500 characters
 	if (body.content.length > 500) {
 		res.status(400);
 		res.json({
@@ -46,6 +61,7 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Ensure that employee has access to conversation
 	if (! await conversations.doesEmployeeHaveAccess(employee.id, body.conversationId)) {
 		res.status(404);
 		res.json({
@@ -59,8 +75,10 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Encrypt message content
 	let encryptedContent = encryptor.encrypt(body.content);
 
+	// Store message with encrypted content to database
 	await messages.addNewMessage(employee.id, body.conversationId, encryptedContent);
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
 	res.status(200);

@@ -1,5 +1,6 @@
 /**
- * Handles the /create-group-conversation endpoint
+ * Handles the /create-group-conversation endpoint.
+ * This endpoint creates a new group conversation.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');
@@ -15,6 +16,7 @@ router.post('/', (req, res) => { handleEndpoint(req, res, handle, true); });
 async function handle(req, res, employee) {
 	const body = req.body;
 
+	// Ensure required fields are present
 	if (!jsonValidation.checkFieldsArePresent(body.name, body.employees)) {
 		res.status(400);
 		res.json({
@@ -25,6 +27,7 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Ensure employees field is array
 	if (!jsonValidation.checkFieldsAreArray(body.employees)) {
 		res.status(400);
 		res.json({
@@ -35,6 +38,7 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Ensure name is not longer than 16 characters
 	if (body.name.length > 16) {
 		res.status(400);
 		res.json({
@@ -45,9 +49,10 @@ async function handle(req, res, employee) {
 		return;
 	}
 
-	// Add current user to the conversation
+	// Add current user
 	const employees = body.employees.concat([employee.username]);
 
+	// Ensure conversation doesn't have more than 100 employees
 	if (employees.length > 100) {
 		res.status(400);
 		res.json({
@@ -61,6 +66,7 @@ async function handle(req, res, employee) {
 	// Remove duplicates
 	const filteredEmployees = [...new Set(employees)];
 
+	// Check for usernames that don't exist
 	const nonexistentUsernames = await getNonexistentUsernames(filteredEmployees);
 	if (nonexistentUsernames.length > 0) {
 		res.status(400);
@@ -73,6 +79,7 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Create conversation
 	const conversationId = await conversations.createNewConversationWithEmployees(body.name, filteredEmployees);
 
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);

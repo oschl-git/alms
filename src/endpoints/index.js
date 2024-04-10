@@ -1,5 +1,6 @@
 /**
- * Handles the index (/) endpoint
+ * Handles the index (/) endpoint.
+ * Returns ALMS status and current statistics.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');

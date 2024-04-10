@@ -1,5 +1,5 @@
 /**
- * Allows access to the session_tokens database table
+ * Allows access to the session_tokens database table.
  */
 
 const { generateSessionToken } = require('../../security/session-token-generator');

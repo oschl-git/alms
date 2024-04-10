@@ -1,5 +1,5 @@
 /**
- * Handles password hashing and verification
+ * Handles password hashing and verification.
  */
 
 const crypto = require('crypto');

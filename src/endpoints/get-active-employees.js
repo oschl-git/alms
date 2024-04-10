@@ -1,5 +1,6 @@
 /**
- * Handles the /get-active-employees endpoint
+ * Handles the /get-active-employees endpoint.
+ * Returns an array of active employees.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');

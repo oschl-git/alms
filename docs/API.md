@@ -539,6 +539,7 @@ Note: Direct conversations do not have a name, so their "name" attribute is alwa
    - [authentication error responses](#authentication-error-responses)
 - **400**
    - *JSON FIELDS MISSING*
+   - *CONVERSATION ID MUST BE INT*
    - *USERNAME MUST BE STRING*
    - *CONVERSATION NOT GROUP*
    - *EMPLOYEE ALREADY IN CONVERSATION*

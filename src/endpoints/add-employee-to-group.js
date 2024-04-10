@@ -1,5 +1,6 @@
 /**
- * Handles the /add-employee-to-group endpoint
+ * Handles the /add-employee-to-group endpoint.
+ * This endpoint adds an employee to an already existing group conversation.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');
@@ -15,6 +16,7 @@ router.post('/', (req, res) => { handleEndpoint(req, res, handle, true); });
 async function handle(req, res, employee) {
 	const body = req.body;
 
+	// Ensure all required fields are present
 	if (!jsonValidation.checkFieldsArePresent(body.conversationId, body.username)) {
 		res.status(400);
 		res.json({
@@ -25,6 +27,18 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Ensure conversationId is int
+	if (!jsonValidation.checkFieldsAreInteger(body.conversationId)) {
+		res.status(400);
+		res.json({
+			error: 400,
+			message: 'CONVERSATION ID MUST BE INT',
+		});
+		logger.warning(`${req.method} fail: ConversationId field is not int at ${req.originalUrl}. (${req.ip})`);
+		return;
+	}
+
+	// Ensure username is string
 	if (!jsonValidation.checkFieldsAreString(body.username)) {
 		res.status(400);
 		res.json({
@@ -35,6 +49,7 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Ensure employee has access to the conversation
 	if (! await conversations.doesEmployeeHaveAccess(employee.id, body.conversationId)) {
 		res.status(404);
 		res.json({
@@ -48,6 +63,7 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Ensure conversation is a group
 	if (! await conversations.isConversationGroup(body.conversationId)) {
 		res.status(400);
 		res.json({
@@ -61,6 +77,7 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Ensure username is not taken
 	if (! await employees.isUsernameTaken(body.username)) {
 		res.status(404);
 		res.json({
@@ -74,6 +91,7 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Ensure employee is not already part of conversation (avoids duplicate records)
 	let employeeId = await employees.getEmployeeIdByUsername(body.username);
 	if (await conversations.doesEmployeeHaveAccess(employeeId, body.conversationId)) {
 		res.status(400);
@@ -88,6 +106,7 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Add employee
 	await conversations.addNewConversationEmployeeRelation(body.conversationId, body.username);
 
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);

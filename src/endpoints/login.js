@@ -1,5 +1,6 @@
 /**
- * Handles the /login endpoint
+ * Handles the /login endpoint.
+ * Handles authenticating users.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');
@@ -16,6 +17,7 @@ router.post('/', (req, res) => { handleEndpoint(req, res, handle); });
 async function handle(req, res) {
 	const body = req.body;
 
+	// Ensure all required fields are present
 	if (!jsonValidation.checkFieldsArePresent(body.username, body.password)) {
 		res.status(400);
 		res.json({
@@ -26,6 +28,7 @@ async function handle(req, res) {
 		return;
 	}
 
+	// Ensure all required fields are string
 	if (!jsonValidation.checkFieldsAreString(body.username, body.password)) {
 		res.json({
 			error: 400,
@@ -35,8 +38,10 @@ async function handle(req, res) {
 		return;
 	}
 
+	// Get employee object
 	const employee = await employees.getEmployeeObjectByUsername(body.username);
 
+	// If employee is null, return that it doesn't exist
 	if (employee === null) {
 		res.status(401);
 		res.json({
@@ -47,6 +52,7 @@ async function handle(req, res) {
 		return;
 	}
 
+	// Ensure supplied password is correct
 	if (!passwordHasher.doPasswordsMatch(body.password, employee.password)) {
 		res.status(401);
 		res.json({
@@ -60,9 +66,12 @@ async function handle(req, res) {
 		return;
 	}
 
+	// Generate and get new session token
 	let token = await sessionTokens.createAndReturnNewSessionToken(employee.id);
 
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);
+
+	// Return token and employee object
 	res.status(200);
 	res.json({
 		token: token,

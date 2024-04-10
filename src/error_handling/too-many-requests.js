@@ -1,5 +1,5 @@
 /**
- * Response if user requests too many requests.
+ * Response if client sends too many requests.
  */
 
 const logger = require('../logging/logger');

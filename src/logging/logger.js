@@ -9,18 +9,30 @@ const { writeLogMessageToFile } = require('../helpers/text-file-handler');
 
 dotenv.config();
 
+/**
+ * Logs a message of type success.
+ * @param {string} message 
+ */
 function success(message) {
 	content = getFormattedLogMessage(message);
 	console.info(content);
 	log(content);
 }
 
+/**
+ * Logs a message of type warning.
+ * @param {string} message 
+ */
 function warning(message) {
 	content = getFormattedLogMessage(message, 'WARNING');
 	console.warn(content);
 	log(content);
 }
 
+/**
+ * Logs a message of type error.
+ * @param {string} message 
+ */
 function error(message) {
 	content = getFormattedLogMessage(message, 'ERROR');
 	console.error(content);

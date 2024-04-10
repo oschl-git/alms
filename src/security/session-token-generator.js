@@ -1,9 +1,13 @@
 /**
- * Handles generating session tokens
+ * Handles generating session tokens.
  */
 
 const crypto = require('crypto');
 
+/**
+ * Generates a new session token with a time signature.
+ * @returns {string} the new session token
+ */
 function generateSessionToken() {
 	const randomBytes = crypto.randomBytes(55).toString('hex');
 	const timeSignature = getTimeSignature();

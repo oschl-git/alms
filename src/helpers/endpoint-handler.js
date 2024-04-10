@@ -1,10 +1,17 @@
 /**
- * Handles endpoints and sends an error response if something goes wrong.
+ * Handles endpoints, their authentication, and sends an error response if something goes wrong.
  */
 
 const authenticator = require('../security/authenticator');
 const logger = require('../logging/logger');
 
+/**
+ * Processes requests.
+ * @param {Request} req - Express request 
+ * @param {Response} res - Express response 
+ * @param {Function} handler - A function that handles the specific endpoint
+ * @param {boolean} requireAuth - If endpoint requires auth headers
+ */
 async function handleEndpoint(req, res, handler, requireAuth) {
 	try {
 		let employee;

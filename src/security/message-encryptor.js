@@ -1,5 +1,5 @@
 /**
- * Handles encrypting and decrypting messages
+ * Handles encrypting and decrypting messages.
  */
 
 const crypto = require('crypto');

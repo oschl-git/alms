@@ -1,5 +1,5 @@
 /**
- * Module with various JSON checks
+ * Provides functions for various JSON checks.
  */
 
 function checkFieldsArePresent(...fields) {

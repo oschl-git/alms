@@ -1,5 +1,5 @@
 /**
- * Allows access to the messages database table
+ * Allows access to the messages database table.
  */
 
 const { query, queryInsertReturnInsertedId, beginTransaction, commit, rollback } = require('../connection');

@@ -70,5 +70,5 @@ module.exports = {
 	beginTransaction,
 	commit,
 	rollback,
-	runTestQuery
+	runTestQuery,
 };

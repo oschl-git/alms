@@ -1,5 +1,6 @@
 /**
- * Handles the /register endpoint
+ * Handles the /register endpoint.
+ * Handles creating new employee accounts.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');
@@ -15,6 +16,7 @@ router.post('/', (req, res) => { handleEndpoint(req, res, handle); });
 async function handle(req, res) {
 	const body = req.body;
 
+	// Ensure all required fields are present
 	if (!jsonValidation.checkFieldsArePresent(body.username, body.name, body.surname, body.password)) {
 		res.status(400);
 		res.json({
@@ -25,6 +27,7 @@ async function handle(req, res) {
 		return;
 	}
 
+	// Ensure all required fields are string
 	if (!jsonValidation.checkFieldsAreString(body.username, body.name, body.surname, body.password)) {
 		res.status(400);
 		res.json({
@@ -35,6 +38,7 @@ async function handle(req, res) {
 		return;
 	}
 
+	// Check fields for requirements, return unsatisfied requirements if any exist
 	const errors = checkFieldsForErrors(body);
 	if (errors.length > 0) {
 		res.status(400);
@@ -47,6 +51,7 @@ async function handle(req, res) {
 		return;
 	}
 
+	// Check if username is available
 	if (await employees.isUsernameTaken(body.username)) {
 		res.status(400);
 		res.json({
@@ -57,8 +62,10 @@ async function handle(req, res) {
 		return;
 	}
 
+	// Create password hash
 	const hashedPassword = passwordHasher.hashPassword(body.password);
 
+	// Add new employee with hashed password to database
 	await employees.addNewEmployee(
 		body.username,
 		body.name,

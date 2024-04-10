@@ -1,5 +1,5 @@
 /**
- * Allows access to the conversations and conversation-participants database tables
+ * Allows access to the conversations and conversation_participants database tables.
  */
 
 const { query, queryInsertReturnInsertedId, beginTransaction, commit, rollback } = require('../connection');

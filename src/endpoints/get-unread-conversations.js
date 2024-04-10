@@ -1,5 +1,7 @@
 /**
- * Handles the /get-unread-conversations endpoint
+ * Handles the /get-unread-conversations endpoint.
+ * Returns all conversations the employee has access to sorted by activity that include messages the user has not read 
+ * yet.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');

@@ -136,3 +136,49 @@ A MySQL database is used to store user data. It uses the following schema:
 ![MySQL schema diagram](./img/mysql-diagram.png)
 
 **SQL scripts to import the database can be found in the [mysql](../mysql) folder.**
+
+## LOC count
+One of the requirements for this project was a minimum line of code count. Below is the output of the [cloc](https://github.com/AlDanial/cloc) program with the `--by-file` option.
+
+```
+-------------------------------------------------------------------------------------------------
+File                                                          blank        comment           code
+-------------------------------------------------------------------------------------------------
+src/database/gateways/conversation-gateway.js                    31             10            157
+src/database/gateways/employee-gateway.js                        17              3            112
+src/endpoints/register.js                                        18             10            101
+src/endpoints/add-employee-to-group.js                           13             12             95
+src/index.js                                                     15             10             88
+src/database/gateways/message-gateway.js                         12              3             81
+src/endpoints/create-group-conversation.js                       16             12             76
+src/endpoints/send-message.js                                    11             11             69
+src/database/gateways/session-token-gateway.js                   14              9             66
+src/endpoints/login.js                                           12             11             64
+src/helpers/endpoint-handler.js                                   8             10             59
+src/security/message-encryptor.js                                15             23             46
+src/endpoints/set-employee-color.js                               9              8             45
+src/logging/logger.js                                            11             15             41
+src/endpoints/get-direct-conversation.js                          9              7             39
+src/error_handling/json-validation.js                             5              3             38
+src/database/connection.js                                       10             27             37
+src/endpoints/get-messages.js                                     8              7             30
+src/endpoints/get-unread-messages.js                              8              7             30
+src/endpoints/get-conversation-by-id.js                           6              5             24
+src/endpoints/index.js                                            5              4             24
+src/security/authenticator.js                                     7              8             20
+src/helpers/text-file-handler.js                                  5              3             17
+src/security/session-token-generator.js                           7              7             17
+src/security/password-hasher.js                                   7             14             16
+src/error_handling/bad-json.js                                    4              3             15
+src/endpoints/is-username-taken.js                                5              4             13
+src/endpoints/get-active-employees.js                             4              4             12
+src/endpoints/get-all-conversations.js                            4              4             12
+src/endpoints/get-all-employees.js                                4              4             12
+src/endpoints/get-direct-conversations.js                         4              4             12
+src/endpoints/get-group-conversations.js                          4              4             12
+src/endpoints/get-unread-conversations.js                         4              5             12
+src/error_handling/too-many-requests.js                           3              3             12
+-------------------------------------------------------------------------------------------------
+SUM:                                                            315            274           1504
+-------------------------------------------------------------------------------------------------
+```

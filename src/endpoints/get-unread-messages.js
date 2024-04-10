@@ -1,5 +1,6 @@
 /**
- * Handles the /get-unread-messages endpoint
+ * Handles the /get-unread-messages endpoint.
+ * Returns the 100 most recent unread messages from the conversation of the specified ID.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');
@@ -15,6 +16,7 @@ router.get('/:conversationId', (req, res) => { handleEndpoint(req, res, handle, 
 async function handle(req, res, employee) {
 	const params = req.params;
 
+	// Ensure employee has access to the conversation
 	if (! await conversations.doesEmployeeHaveAccess(employee.id, params.conversationId)) {
 		res.status(404);
 		res.json({
@@ -28,9 +30,11 @@ async function handle(req, res, employee) {
 		return;
 	}
 
+	// Retrieve and decrypt message content
 	const retrievedMessages = await messages.getUnreadMessagesFromConversation(params.conversationId, employee.id);
 	const decryptedMessages = encryptor.decryptMessageObjectArray(retrievedMessages);
 
+	// Mark messages as read for the current employee
 	await messages.markMessagesAsRead(employee.id, decryptedMessages);
 
 	logger.success(`${req.method} OK: ${req.originalUrl} (${req.ip})`);

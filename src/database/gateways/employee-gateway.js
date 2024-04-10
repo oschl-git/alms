@@ -1,5 +1,5 @@
 /**
- * Allows access to the employees database table
+ * Allows access to the employees database table.
  */
 
 const { query, queryInsertReturnInsertedId, beginTransaction, commit, rollback } = require('../connection');

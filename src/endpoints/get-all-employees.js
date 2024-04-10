@@ -1,5 +1,6 @@
 /**
- * Handles the /get-all-employees endpoint
+ * Handles the /get-all-employees endpoint.
+ * Returns an array of all registered employees.
  */
 
 const { handleEndpoint } = require('../helpers/endpoint-handler');
