@@ -43,7 +43,7 @@ Endpoints that do not return anything will return a generic success response of 
 ```
 
 ## Rate limiting
-ALMS limits the number of responses per minute per IP address. The limit is currently hardcoded and is 250 requests per minute. If the amount is exceeded, the server responds with a 429 error code and the following response is sent:
+ALMS limits the number of responses per minute per IP address. The limit is configurable in the .env file, and should be somewhere around 250 requests per minute. If the amount is exceeded, the server responds with a 429 error code and the following response is sent:
 ```
 {
    "error": 429,
