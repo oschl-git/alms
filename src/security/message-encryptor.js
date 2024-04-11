@@ -10,7 +10,7 @@ dotenv.config();
 const secretKey = process.env.ENCRYPTION_KEY;
 
 /**
- * Encrypts a string and returns the cypher.
+ * Encrypts a string and returns the cipher.
  * @param {string} text - The text to encrypt
  * @returns {string} the encrypted text with initialization vector
  */
@@ -26,7 +26,7 @@ function encrypt(text) {
 }
 
 /**
- * Decrypt a cypher and returns the decrypted string.
+ * Decrypt a cipher and returns the decrypted string.
  * @param {string} text - The text to decrypt
  * @returns {string} the decrypted message if decryption was successful, the original text if not
  */

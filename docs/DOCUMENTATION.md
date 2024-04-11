@@ -137,6 +137,15 @@ A MySQL database is used to store user data. It uses the following schema:
 
 **SQL scripts to import the database can be found in the [mysql](../mysql) folder.**
 
+## Project summary and recollection
+I thought of the idea for this project only a few days before I started working on it, and I'm really satisfied with how it turned out. I really enjoyed working on the two individual parts, the client and the server, and making them work together.
+
+It was interesting to see how the two languages I chose differ. One of the requirements for the school assignment was a minimum line of code count of 2500 lines, which would be very difficult to reach if I only worked on this project in JavaScript, but trivial if I worked on it in C#. Certain languages are simply a lot more verbose and vertical than others, showing just how silly and pointless this requirement is and how little it says about the overall complexity or quality of the project. In the end, the two parts combined consist of over 5000 lines of code, so this matters little to me.
+
+One of my favourite aspects of working on ASCAMP was hosting. It was the first time I bought a domain and a VPS, and it was fun to setup Debian on it, figure out how to turn the webserver into a HTTPs one, setup MySQL, etc.
+
+Overall, I am very happy with all the work I've done here.
+
 ## LOC count
 One of the requirements for this project was a minimum line of code count. Below is the output of the [cloc](https://github.com/AlDanial/cloc) program with the `--by-file` option.
 
